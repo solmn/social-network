@@ -13,6 +13,7 @@ import { first } from 'rxjs/operators';
 export class LeftComponent implements OnInit {
   currentUser: User;
   url = "";
+  public searchResults:any;
   public uploader: FileUploader;
   private hasDragOver = false;
   constructor(private userService: UserService, private authService: AuthenticationService) {
