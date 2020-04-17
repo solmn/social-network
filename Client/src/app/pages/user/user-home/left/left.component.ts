@@ -44,6 +44,12 @@ export class LeftComponent implements OnInit {
    public fileOver(e: any): void {
     this.hasDragOver = e;
   }
+  searchPost(textToSearch){
+    this.userService.searchPosts(textToSearch).pipe(first())
+                                              .subscribe(res=>{
+                                                this.searchResults = res.result;
+                                              });
+  }
   ngOnInit(): void {
   }
 }
