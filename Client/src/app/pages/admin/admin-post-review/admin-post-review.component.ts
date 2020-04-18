@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from 'src/app/services/admin.service';
 import { first } from 'rxjs/operators';
+import { UserService } from 'src/app/services';
 
 @Component({
   selector: 'app-admin-post-review',
@@ -8,34 +9,34 @@ import { first } from 'rxjs/operators';
   styleUrls: ['./admin-post-review.component.scss']
 })
 export class AdminPostReviewComponent implements OnInit {
-
-  constructor(private adminService:AdminService) { }
+  adminNotifications:any
+  allBadPosts:any
+  constructor(private adminService:AdminService, private userService: UserService) { 
+    this.allBadPosts = adminService.getBadWordPostData();
+    this.userService.adminBadPostSubject.subscribe(res => {
+      console.log("BAD bad bad word posted");
+      
+    })
+  }
 
   ngOnInit(): void {
   }
 
-  approvePost(post){
-    this.adminService.approvePost(post)
+  acceptBadPost(badPost,index){
+    this.adminService.approvePost(badPost)
                      .pipe(first())
                      .subscribe(response=>{
-                       if(response.status === 501){
-                         
-                       }else{
-                         //show flagged post?
-                       }
+                      this.allBadPosts[index] = response.result;
                      });
     
   }
 
-  rejectPost(post){
-    this.adminService.rejectPost(post)
+  rejectBadPost(badPost ,index){
+    this.adminService.rejectPost(badPost)
                      .pipe(first())
                      .subscribe(response=>{
-                        if(response.status === 501){
-                          
-                        }else{
-                          //show flagged post?
-                        }
+                          this.allBadPosts[index] = response.result;
+                  
                       });
   }
 
