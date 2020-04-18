@@ -8,5 +8,6 @@ export class Post {
     likes: Object[];
     status: string;
     createdAt: any;
+    notify: any;
 
 }

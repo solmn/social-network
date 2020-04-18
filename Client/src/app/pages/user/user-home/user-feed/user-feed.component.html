@@ -34,6 +34,11 @@
           </span>
         </alert>
        </div>
+       <span><bSwitch
+        [switch-on-color]="'primary'"
+        [switch-off-color]="'primary'"
+        [(ngModel)]="post.notify">
+    </bSwitch> notify my followers</span>
         <button (click)="createPost()" style="float:right; margin-top: 1%"  class="btn-sm btn btn-primary btn-simple">Post</button>
 
   </div>

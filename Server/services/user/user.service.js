@@ -37,7 +37,14 @@ async function createPost(userId, data, app) {
 
     // }
     result = await post.save();
-    await notificationService.newPostNotification(userId, result, app);
+    if(data.notify) {
+        await notificationService.newPostNotification(userId, result, app);
+        console.log('Notifying....');
+    }
+    else {
+        console.log("emmmmmmmmm");
+    }
+   
 
 
 
