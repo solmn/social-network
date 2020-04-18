@@ -152,6 +152,7 @@ async function updateUser(id, data) {
         }
 
     });
+    return new ApiResponse(200, 'success', {});
 
 }
 async function getUserById(id) {
@@ -332,7 +333,7 @@ async function searchAllPosts(searchThis) {
 }
 
 async function _getUserById(id) {
-    return await User.findById(id);
+    return await User.findById({_id:id});
 }
 
 module.exports = {
@@ -360,6 +361,7 @@ module.exports = {
     changeProfilePic,
     fetchFeed,
     getPosts,
-    searchAllPosts
+    searchAllPosts,
+    updateUser
 
 }
