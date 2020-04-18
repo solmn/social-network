@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services';
 
 @Component({
   selector: 'app-admin-home',
@@ -7,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminHomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService: UserService) { 
+    this.userService.connect();
+    this.userService.adminBadPostSubject.subscribe(res => {
+      console.log("POSTED");
+    })
+  }
 
   ngOnInit(): void {
   }
