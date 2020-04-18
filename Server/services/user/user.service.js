@@ -287,10 +287,9 @@ async function unFollowUser(id, uId) {
     let following = u1.following.filter(f => f.followerID != uId);
     let followers = u2.followers.filter(f => f.followerID != id);
 
-    await User.updateOne({ _id: id },
-        {
-            $set: { following: following }
-        });
+    await User.updateOne({ _id: id }, {
+        $set: { following: following }
+    });
     await User.updateOne({ _id: uId }, {
         $set: { followers: followers }
     })
@@ -305,32 +304,33 @@ async function unFollowUser(id, uId) {
  */
 
 
-    async function _getUser(userId) {
-        return await User.findById({ _id: userId });
-    }
+async function _getUser(userId) {
+    return await User.findById({ _id: userId });
+}
 
-    async function fetchFeed(userId) {
-        let user = await _getUser(userId);
-        let followings = user.following;
-        followings = followings.map(f => f.followerID);
-        followings.push(userId);
-        let result = await Post.find({ postedBy: { $in: followings } })
-            .populate("postedBy")
-            .populate("comments.commentedBy")
-            .sort({ createdAt: "desc" });
-        return new ApiResponse(200, "success", result);
-    }
+async function fetchFeed(userId) {
+    let user = await _getUser(userId);
+    let followings = user.following;
+    followings = followings.map(f => f.followerID);
+    followings.push(userId);
+    let result = await Post.find({ postedBy: { $in: followings } })
+        .populate("postedBy")
+        .populate("comments.commentedBy")
+        .sort({ createdAt: "desc" });
+    return new ApiResponse(200, "success", result);
+}
 
-    async function getPosts(userId) {
-        let result = await Post.find({ postedBy: userId })
-            .populate("comments.commentedBy")
-            .sort({ createdAt: "desc" });
-        return new ApiResponse(200, "success", result);
-    }
+async function getPosts(userId) {
+    let result = await Post.find({ postedBy: userId })
+        .populate("comments.commentedBy")
+        .sort({ createdAt: "desc" });
+    return new ApiResponse(200, "success", result);
+}
 
-
-
-
+async function searchAllPosts(searchThis) {
+    let result = await systemService.getSearchResults(searchThis);
+    return new ApiResponse(200, "success", result);
+}
 
 async function _getUserById(id) {
     return await User.findById({_id:id});
@@ -361,6 +361,7 @@ module.exports = {
     changeProfilePic,
     fetchFeed,
     getPosts,
+    searchAllPosts,
     updateUser
 
 }

@@ -111,6 +111,9 @@ export class UserService {
   changeProfilePic(pic) {
     return this.http.post<ApiResponse>(environment.API_URL + "/api/user/change-pic", {pic: pic});
   }
+  searchPosts(searchThis){
+    return this.http.post<ApiResponse>(environment.API_URL+"/api/user/search-posts", {search: searchThis})
+  }
 
   updateUser(data) {
     return this.http.post<ApiResponse>(environment.API_URL + "/api/user/update-user", data);
