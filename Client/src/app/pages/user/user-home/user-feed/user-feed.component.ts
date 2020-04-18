@@ -59,7 +59,6 @@ export class UserFeedComponent implements OnInit {
 
   }
 
-  
   ngOnInit(): void {
     this.initPost();
      this.fetchPostFeeds();

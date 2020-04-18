@@ -15,6 +15,7 @@ async function getAllPosts() {
     //console.log("test1"); 
 
 }
+
 async function createPost(userId, data, app) {
     const post = new Post({
         title: "Post",

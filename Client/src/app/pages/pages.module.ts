@@ -51,9 +51,10 @@ import { FollowersComponent } from './user/user-home/explore/followers/followers
 import { FollowingsComponent } from './user/user-home/explore/followings/followings.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
-
+import { LinkyModule } from 'ngx-linky';
 @NgModule({
   imports: [
+    LinkyModule,
     NotifierModule,
     FileUploadModule,
     CommonModule,
