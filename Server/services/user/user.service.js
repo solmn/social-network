@@ -168,7 +168,7 @@ async function getUserById(id) {
 }
 
 async function getAllUsers() {
-    let result = await User.find();
+    let result = await User.find({status: "activated"});
     return new ApiResponse(200, "success", result);
 }
 
@@ -243,7 +243,7 @@ async function updateUserAdvt(id, update) {
 async function getFollowers(id) {
     let user = await User.findById({ _id: id });
     let followers = user.followers.map(f => f.followerID);
-    let myFollowers = await User.find({ _id: { $in: followers } });
+    let myFollowers = await User.find({ _id: { $in: followers }, status: "activated"});
 
     return new ApiResponse(200, "success", myFollowers);
 
@@ -254,7 +254,7 @@ async function getFollowings(id) {
     let user = await User.findById({ _id: id });
     let followings = user.following.map(f => f.followerID);
     console.log(user, followings);
-    let Myfollowings = await User.find({ _id: { $in: followings } });
+    let Myfollowings = await User.find({ _id: { $in: followings }, status: "activated" });
 
     return new ApiResponse(200, "success", Myfollowings);
 
@@ -320,7 +320,7 @@ async function fetchFeed(userId) {
     let followings = user.following;
     followings = followings.map(f => f.followerID);
     followings.push(userId);
-    let result = await Post.find({ postedBy: { $in: followings } })
+    let result = await Post.find({ postedBy: { $in: followings }, status: "ok" })
         .populate("postedBy")
         .populate("comments.commentedBy")
         .sort({ createdAt: "desc" });
@@ -328,9 +328,9 @@ async function fetchFeed(userId) {
 }
 
 async function getPosts(userId) {
-    let result = await Post.find({ postedBy: userId })
+    let result = await Post.find({ postedBy: userId, status: "ok" })
         .populate("comments.commentedBy")
-        .sort({ createdAt: "desc" });
+        .sort({ createdAt: "desc" }).limit(8);
     return new ApiResponse(200, "success", result);
 }
 

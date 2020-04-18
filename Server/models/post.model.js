@@ -34,7 +34,7 @@ const postSchema = new mongoose.Schema({
         }
 
     }],
-    stuatus: {
+    status: {
         type: String,
         default: "ok"
     },
