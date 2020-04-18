@@ -66,7 +66,10 @@ export class UserFeedComponent implements OnInit {
      this.userService.postSubject.subscribe(re => {
        this.fetchPostFeeds();
        this.end = false;
-     })
+     });
+     this.userService.searchSubject.subscribe(result => {
+       this.feeds = result;
+     });
   }
   
 @HostListener("window:scroll", [])
@@ -147,12 +150,15 @@ onWindowScroll() {
         .subscribe(respose => {
           console.log("COMMENT RESPONSE", respose);
           let i = this.feeds.findIndex(f => f._id == id);
-          let c = {
-            text: text,
-            commentedBy: this.userService.getCurrrentUser(),
-            createdAt: Date.now()
-          };
-          this.feeds[i].comments.push(c);
+          // let c = {
+          //   text: text,
+          //   commentedBy: this.userService.getCurrrentUser(),
+          //   createdAt: Date.now()
+          // };
+          this.userService.getPost(id).subscribe(result => {
+            this.feeds[i] = result.result;
+          })
+          // this.feeds[i].comments.push(c);
         })
   }
  isLiked(id) {
@@ -186,6 +192,21 @@ onWindowScroll() {
         this.feeds[i].likes.push(l);
       });
     }
+    
+  }
+
+  deleteComment(postId, commentId) {
+      this.userService.deleteComment({postId:postId, commentId: commentId}).subscribe(re => {
+        console.log("deleted");
+        let i = this.feeds.findIndex(p => p._id == postId);
+        if(i > -1) {
+          let c_i = this.feeds[i].comments.findIndex(c =>c._id == commentId);
+          if(c_i > -1){
+             this.feeds[i].comments.splice(c_i, 1);
+          }
+          console.log(postId, commentId, i, c_i);
+        }
+      });
     
   }
 

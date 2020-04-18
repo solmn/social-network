@@ -1,9 +1,30 @@
-<div class="right-container">
+<div class="right-container" style="border-radius: 13px;">
   
-    <div class="card" style="background-color: white;height: 800px; padding: 4%; overflow: scroll;">
-      <alert [type]="'info'" [dismissible]="true" *ngFor="let noti of userNoti.notifications">
-        {{ noti.message }}
-        <span style="font-size: 10px;;">{{noti.createdAt | timeAgo}}</span>
-      </alert>  
+  <div class="card post" style="border-radius: 13px; max-height: 400px;">
+    <div class="card-body">
+      <h5 style="color: black;">Sponsored</h5>
+      <div class="content">
+           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+                ut aliquip ex ea commodo consequat.
+            </p>
+           <img height="200px"   src="assets/img/post.jpeg" />
+      </div>
     </div>
+  </div>
+  <div class="card post" style="border-radius: 13px; max-height: 400px;">
+    <div class="card-body">
+      <h5 style="color: black;">Sponsored</h5>
+      <div class="content">
+           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+                ut aliquip ex ea commodo consequat.
+            </p>
+           <img src="assets/img/post.jpeg" />
+      </div>
+    </div>
+  </div>
+    
 </div>

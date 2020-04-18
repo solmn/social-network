@@ -106,7 +106,6 @@ exports.unLikePost = async(req, res, next) => {
 
 }
 exports.updatecomment = async(req, res, next) => {
-    console.log("test create post", req.params.p_id);
 
     await userService.updateComment(req.body);
     res.json({ message: "comment successfully updated" });
@@ -114,14 +113,24 @@ exports.updatecomment = async(req, res, next) => {
 
 
 }
-exports.updatecommentget = async(req, res, next) => {
-    res.json(await userService.updateCommentGet(req.params.p_Id));
+exports.getPost = async(req, res, next) => {
+    try {
+        let response =  await userService.getPost(req.params.postId);
+        res.status(response.status).json(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(new ApiResponse(500, 'error', err));
+    }
 
 }
-exports.deletecomment = async(req, res, next) => {
-
-    await userService.deleteComment(req.params.d_cid);
-    res.json({ message: "comment successfully deleted" });
+exports.deleteComment = async(req, res, next) => {
+    try {
+        let response =  await userService.deleteComment(req.body.postId, req.body.commentId);
+        res.status(response.status).json(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(new ApiResponse(500, 'error', err));
+    }
 
 
 }
@@ -142,10 +151,20 @@ exports.followUser = async(req, res, next) => {
 }
 
 exports.fetchFeed = async(req, res, next) => {
-    console.log(req.userId, "IS MY ID");
 
     try {
         let response = await userService.fetchFeed(req.userId, req.query.page);
+        res.status(response.status).json(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(new ApiResponse(500, 'error', err));
+    }
+}
+
+exports.fetchAds = async (req, res, next) => {
+    try {
+        let response = await userService.fetchAds(req.userId);
+        console.log("result of ads", response);
         res.status(response.status).json(response);
     } catch (err) {
         console.log(err);
@@ -215,9 +234,9 @@ exports.changeProfilePic = async(req, res, next) => {
         res.status(500).json(new ApiResponse(500, 'error', err));
     }
 }
-exports.searchPosts = async(req, res, next) => {
+exports.searchFeeds = async(req, res, next) => {
     try {
-        let response = await userService.searchAllPosts(req.body.search);
+        let response = await userService.searchFeeds(req.userId, req.body.search);
         res.status(response.status).json(response);
     } catch (err) {
         console.log(err);

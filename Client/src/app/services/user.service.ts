@@ -19,6 +19,7 @@ export class UserService {
   public followings = new Subject<any>();
 
   public postSubject = new Subject<any>();
+  public searchSubject = new BehaviorSubject<Array<Post>>([]);
 
   // public notificationSubject = new BehaviorSubject<any>();
   
@@ -41,7 +42,7 @@ export class UserService {
   
 
   getUserById(id) {
-    return this.http.get<ApiResponse>(environment.API_URL + "/api/users/" + id);
+    return this.http.get<ApiResponse>(environment.API_URL + "/api/users/1/" + id);
   }
 
   signup(user: User){
@@ -103,6 +104,9 @@ export class UserService {
   getPosts() {
     return this.http.get<ApiResponse>(environment.API_URL + "/api/user/posts");
   }
+  feetchAds() {
+    return this.http.get<ApiResponse>(environment.API_URL + "/api/user/fetch-ads");
+  }
 
   getFollowers() {
     return this.http.get<ApiResponse>(environment.API_URL + "/api/user/followers");
@@ -123,7 +127,18 @@ export class UserService {
     return this.http.post<ApiResponse>(environment.API_URL + "/api/user/update-user", data);
   }
 
+  searchFeeds(search) {
+    return this.http.post<ApiResponse>(environment.API_URL + "/api/user/search-feeds", {search: search});
+  }
 
+  deleteComment(data) {
+    return this.http.post<ApiResponse>(environment.API_URL + "/api/user/delete-comment", data);
+  }
+
+  
+  getPost(postId) {
+    return this.http.get<ApiResponse>(environment.API_URL + "/api/user/get-post/"+postId);
+  }
 
   
   

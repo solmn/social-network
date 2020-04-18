@@ -14,14 +14,17 @@ export class RightComponent implements OnInit {
      private userService: UserService,
      private router: Router) {
 
-    this.userService.postSubject.subscribe(e => {
-        this.userNoti.notifications = [];
-         this.getNotification();
-    })
+    // this.userService.postSubject.subscribe(e => {
+    //     this.userNoti.notifications = [];
+    //      this.getNotification();
+    // })
    }  
 
   ngOnInit(): void {
-     this.getNotification();
+    //  this.getNotification();
+    // this.userService.feetchAds().subscribe(result => {
+    //   console.log("ADDDDSSSSSSSSSSS", result);
+    // });
   }
 
   getNotification() {

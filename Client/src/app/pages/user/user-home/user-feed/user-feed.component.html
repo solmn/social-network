@@ -3,7 +3,7 @@
   <div class="card-body">
        <div class="pic_username">
            <img src="assets/img/mike.jpg" width=30 class=" rounded-circle">
-           <span >Jenefer Lawrun</span>
+           <span >{{currentUser.firstname}}  {{currentUser.lastname}}</span>
        </div>
         <div class="form-row position: relative">
           <textarea [(ngModel)]="post.description" style="color: black" class="form-control"  placeholder="What is in your mind?" id="exampleFormControlTextarea1" >
@@ -82,6 +82,7 @@
               <span style="font-weight: bold;" >{{comment.commentedBy.username}} </span>
               <span style="font-size: 10px;">{{ comment.createdAt | timeAgo }}</span>
               <p>{{comment.text}}</p>
+              <a style="color: blue;font-size: 10;" href="javascript:void(0)" (click)="deleteComment(feed._id, comment._id)">delete</a>
           </div>
           <div class="col-sm-3"></div>
           

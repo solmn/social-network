@@ -3,7 +3,7 @@
     <div class="search">
       <form  class=" ng-untouched ng-pristine ng-valid" novalidate="" style="margin:2%">
           <div  class="form-group">
-              <input _ngcontent-amm-c10="" (keyup.enter)="searchPost($event.target.value)" class="form-control" placeholder="Search" type="text">
+              <input *ngIf="router.url ==='/home'" _ngcontent-amm-c10="" (keyup.enter)="searchPost($event.target.value)" class="form-control" placeholder="Search" type="text">
           </div>
       </form>
   </div>
@@ -15,9 +15,7 @@
       <a class="nav-link n" [class.active]="index == 1" href="#" [routerLink]="['explore']" (click)="setIndex(1)">
           <i class="tim-icons icon-world"> </i>
       </a>
-      <a *ngIf="currentUser.role === 'ADMIN'" class="nav-link" href="#" routerLink="/admin">
-          <i class="tim-icons icon-world"> </i>Admin panel
-      </a>
+      
   </nav>
   </div>
   <div class="col-md-3">
@@ -44,12 +42,33 @@
         >
           <ul class="navbar-nav ml-auto">
            
-            <li class="nav-item" style="border-radius: 58px;background-color: #e4e6eb;">
-              <a class="nav-link" href="javascript:void(0)">
-                <i aria-hidden="true" class="tim-icons icon-bell-55 ico">
-                </i>
+            
+            <li class="nav-item dropdown" dropdown>
+              <a
+                class="nav-link dropdown-toggle dropdown-toggle"
+                data-toggle="dropdown"
+                dropdownToggle
+                href="javascript:void(0)"
+                id="navbarDropdownMenuLink"
+              >
+              <i aria-hidden="true" class="tim-icons icon-bell-55 ico">
+              </i><span style="padding:0.15rem 0.10rem;" class=" badge badge-default">{{countNoti()}}</span>
               </a>
+              <div
+                aria-labelledby="navbarDropdownMenuLink"
+                class="dropdown-menu dropdown-menu-right"
+                *dropdownMenu
+              >
+                <a class="dropdown-item"  href="javascript:void(0)">
+                  <alert [type]="'info'" [dismissible]="true" *ngFor="let noti of userNoti.notifications">
+                    {{ noti.message }}
+                    <span style="font-size: 10px;;">{{noti.createdAt | timeAgo}}</span>
+                  </alert> 
+                </a>
+                <div class="divider"></div>
+              </div>
             </li>
+
             <li class="nav-item dropdown" dropdown>
               <a
                 class="nav-link dropdown-toggle dropdown-toggle"

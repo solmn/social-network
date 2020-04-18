@@ -1,4 +1,5 @@
 const
+    mongoose = require('mongoose'),
     path = require('path'),
     { ApiResponse } = require(path.join(__dirname, "..", "..", "util")),
     fs = require('fs'),
@@ -6,7 +7,8 @@ const
     stopWordPath = path.join(__dirname, '..', '..', 'resources/stop-words/stopWords.json'),
     { User, Post, Ad } = require(path.join(__dirname, '..', '..', 'models')),
     notificationService = require('../notification'),
-    systemService = require("../system");
+    systemService = require("../system"),
+    moment = require('moment');
 
 
 
@@ -40,16 +42,34 @@ async function createPost(userId, data, app) {
     result = await post.save();
     if(data.notify) {
         await notificationService.newPostNotification(userId, result, app);
-        console.log('Notifying....');
     }
     else {
-        console.log("emmmmmmmmm");
     }
-   
-
-
-
     return new ApiResponse(200, "success", result);
+}
+
+
+
+
+async function fetchAds(userId) {
+   let u =  await User.aggregate([{$match:{_id: mongoose.Types.ObjectId(userId + "")}},
+        { 
+            $project: { 
+                firstname: "$firstname",
+                location: "$location",
+                date:"$birthdate", 
+                age: { 
+                    $divide: [{$subtract: [ new Date(), "$birthdate" ] }, 
+                            (365 * 24*60*60*1000)]} 
+                }
+        } ] );
+    let age = Math.round(parseFloat(u.age));
+    let result = await Ad.find({
+        $or: [{minAge: { $lte:  age}, maxAge: { $gte: age }},
+             {targetLocation: u.location}]
+    }).sort({ createdAt: "desc" });
+    return new ApiResponse(200, "success", result);
+
 }
 
 async function updatePostGet(id) {
@@ -59,7 +79,6 @@ async function updatePostGet(id) {
 }
 
 async function updatePost(data) {
-    //console.log('update working......');
     await Post.updateOne({ _id: data._id }, {
         $set: { title: data.title, description: data.description, images: data.image }
 
@@ -74,13 +93,14 @@ async function deletePost(pId) {
     });
 }
 
-async function getPost(p_id) {
-    return await Post.findById(p_id);
+async function getPost(postId) {
+    let result =  await Post.findById({_id: postId});
+    return new ApiResponse(200, 'success', result);
 }
 
 
 async function addComment(id, postId, data, app) {
-    await Post.updateOne({ _id: postId }, {
+   let r = await Post.updateOne({ _id: postId }, {
         $push: {
             comments: {
                 text: data.text,
@@ -88,7 +108,6 @@ async function addComment(id, postId, data, app) {
             }
         }
     });
-
     await notificationService.commentNotification(id, postId, app);
     return new ApiResponse(200, "success", {});
 
@@ -109,7 +128,6 @@ async function likePost(id, postId, data, app) {
 }
 
 async function unLikePost(id, postId) {
-    console.log("UNLIKE")
     await Post.updateOne({ _id: postId }, {
         $pull: {
             likes: {
@@ -136,11 +154,13 @@ async function updateComment(data) {
     });
 }
 
-async function deleteComment(params) {
-    await Post.findByIdAndRemove({
-        _id: params
-
+async function deleteComment(postId, commentId) {
+    let result = await Post.updateOne({_id: postId}, {
+        $pull: {
+            comments:{_id: commentId}
+        }
     });
+    return new ApiResponse(200, "success", {});
 }
 
 
@@ -229,7 +249,6 @@ function getSearchResults(this_User_id, search_Phrase) {
         .execPopuate();
 }
 async function updateUserAdvt(id, update) {
-    console.log(id, update, 'id print');
     await User.updateOne({ _id: id }, { advetisements: { $push: update } });
 
 }
@@ -251,10 +270,8 @@ async function getFollowers(id) {
 }
 
 async function getFollowings(id) {
-    console.log("get followings")
     let user = await User.findById({ _id: id });
     let followings = user.following.map(f => f.followerID);
-    console.log(user, followings);
     let Myfollowings = await User.find({ _id: { $in: followings }, status: "activated" });
 
     return new ApiResponse(200, "success", Myfollowings);
@@ -331,6 +348,25 @@ async function fetchFeed(userId, page) {
         .limit(Limit);
     return new ApiResponse(200, "success", result);
 }
+async function searchFeeds(userId, text) {
+    let Limit = 8;
+    page = 1;
+    let user = await _getUser(userId);
+    let followings = user.following;
+    followings = followings.map(f => f.followerID);
+    followings.push(userId);
+    let result = await Post.find(
+        { postedBy: { $in: followings },
+          status: "ok" ,
+          description: {$regex: text, $options:"i"}
+        })
+        .populate("postedBy")
+        .populate("comments.commentedBy")
+        .sort({ createdAt: "desc" })
+        .skip(Limit * page - Limit)
+        .limit(Limit);
+    return new ApiResponse(200, "success", result);
+}
 
 async function getPosts(userId) {
     let result = await Post.find({ postedBy: userId, status: "ok" })
@@ -373,7 +409,8 @@ module.exports = {
     changeProfilePic,
     fetchFeed,
     getPosts,
-    searchAllPosts,
-    updateUser
+    searchFeeds,
+    updateUser,
+    fetchAds
 
 }
