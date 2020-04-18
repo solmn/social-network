@@ -37,19 +37,13 @@ async function createPost(userId, data, app) {
 
     } else {
         result = await post.save();
-        await notificationService.newPostNotification(userId, result, app);
-
-    // }
-    result = await post.save();
-    if(data.notify) {
-        await notificationService.newPostNotification(userId, result, app);
-    }
-    else {
-    }
+        if(data.notify) {
+            await notificationService.newPostNotification(userId, result, app);
+        }
     return new ApiResponse(200, "success", result);
 }
 
-
+}
 
 
 async function fetchAds(userId) {
