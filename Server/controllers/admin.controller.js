@@ -55,12 +55,12 @@ exports.getAllAdverts = async(req, res, next) => {
 
 exports.editAdvertisement = async(req, res, next) => {
 
-    await adminService.editAdvertisement(req.body)
-        .then((result) => {
-            res.json({ message: "you have successfully edited" });
-            res.redirect('/create-ad')
-
-        }).catch(err => console.log(err));
+    try {
+        let result = await adminService.editAdvertisement(req.params._id, req.params.edited);
+        res.status(200).json(new ApiResponse(200, "success", result));
+    } catch (err) {
+        res.status(500).json(new ApiResponse(500, "err", err));
+    }
 }
 
 exports.getAdv = async(req, res, next) => {
@@ -110,6 +110,15 @@ exports.activateUserAccount = async(req, res, next) => {
 exports.getDeactivatedUserAccounts = async(req, res, next) => {
     try {
         let result = await adminService.getDeactivatedAccounts();
+        res.status(200).json(new ApiResponse(200, "success", result));
+    } catch (err) {
+        res.status(500).json(new ApiResponse(500, "err", err));
+    }
+
+}
+exports.getBadWordedPosts = async(req, res, next) => {
+    try {
+        let result = await adminService.getBadWordedPosts();
         res.status(200).json(new ApiResponse(200, "success", result));
     } catch (err) {
         res.status(500).json(new ApiResponse(500, "err", err));
