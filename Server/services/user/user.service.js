@@ -34,14 +34,17 @@ async function createPost(userId, data, app) {
         console.log("STATUS CHANGED ");
         result = await post.save();
         await notificationService.badPostNotification(userId, result, app);
+        console.log("BAD post");
 
     } else {
+        console.log("HEALTHY post");
         result = await post.save();
         if(data.notify) {
+            console.log("notify others");
             await notificationService.newPostNotification(userId, result, app);
         }
+    }
     return new ApiResponse(200, "success", result);
-}
 
 }
 
@@ -335,7 +338,7 @@ async function fetchFeed(userId, page) {
     let followings = user.following;
     followings = followings.map(f => f.followerID);
     followings.push(userId);
-    let result = await Post.find({ postedBy: { $in: followings }, status: "ok" })
+    let result = await Post.find({ postedBy: { $in: followings }, $or: [{status: "ok"}, {postedBy: userId}] })
         .populate("postedBy")
         .populate("comments.commentedBy")
         .sort({ createdAt: "desc" })
@@ -364,7 +367,7 @@ async function searchFeeds(userId, text) {
 }
 
 async function getPosts(userId) {
-    let result = await Post.find({ postedBy: userId, status: "ok" })
+    let result = await Post.find({ postedBy: userId })
         .populate("comments.commentedBy")
         .sort({ createdAt: "desc" }).limit(8);
     return new ApiResponse(200, "success", result);
