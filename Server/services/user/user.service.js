@@ -27,10 +27,11 @@ async function createPost(userId, data, app) {
 
     });
     let result;
-    let review = await systemService.notSafeForPost(data.description);
-    console.log("REVIEW RESULT", review);
-    if (review) {
+    let failsReview = await systemService.notSafeForPost(data.description);
+    console.log("REVIEW RESULT", failsReview);
+    if (failsReview) {
         post.status = "onhold";
+        console.log("STATUS CHANGED ");
         result = await post.save();
         await notificationService.badPostNotification(userId, result, app);
 

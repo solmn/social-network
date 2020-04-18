@@ -54,6 +54,7 @@ async function addAdvertisement(advData) {
         postedBy: advData.postedBy,
         minAge: advData.minAge,
         maxAge: advData.maxAge,
+        targetType: advData.targetType,
         targetLocation: advData.targetLocation
     });
     let savedAdd = await advertisement.save();
@@ -65,16 +66,17 @@ async function getAllAdvertisements() {
     return allAdverts;
 }
 
-async function editAdvertisement(dataUpdate) {
+async function editAdvertisement(ad_Id, editedAd) {
 
-    await Ad.updateOne({ _id: dataUpdate._id }, {
+    return await Ad.updateOne({ _id: ad_Id }, {
         $set: {
-            text: dataUpdate.text,
-            link: dataUpdate.link,
-            postby: dataUpdate.postby,
-            datepublished: dataUpdate.datepublished,
-            targetedUser: dataUpdate.age,
-            targetedUser: dataUpdate.location
+            description: editedAd.description,
+            imageUrl: editedAd.imageUrl,
+            postedBy: editedAd.postedBy,
+            minAge: editedAd.minAge,
+            maxAge: editedAd.maxAge,
+            targetType: editedAd.targetType,
+            targetLocation: editedAd.targetLocation
 
         }
     });
@@ -111,6 +113,12 @@ async function getDeactivatedAccounts() {
     return results;
 }
 
+// async function getBadWordedPosts() {
+//     let results = await User.find({ 'notifications.notiType': {} })
+
+
+// }
+
 module.exports = {
     deleteAd,
     addBadWord,
@@ -125,5 +133,6 @@ module.exports = {
     approveThisPost,
     rejectThisPost,
     activateThisAccount,
-    getDeactivatedAccounts
+    getDeactivatedAccounts,
+    // getBadWordedPosts
 }
