@@ -1,12 +1,15 @@
 .card.create-post {
   background-color: white;
   border-radius: 14px;
-  margin-top: 3px;
+  margin-top: 0px;
 }
 
 .pic_username span {
   color:black;
   margin-left: 16px
+}
+.create{
+  padding-left: 0px !important;
 }
 .pic_username {
   margin-left: 2%;
@@ -30,19 +33,6 @@ p {
   padding: 0px;
 }
 
-// .pic_username span {
-//   color:black;
-//   margin-left: 16px
-// }
-
-// .card {
-//   background-color: white;
-// }
-
-// p {
-//   color: black
-// }
-
-// .post-content img {
-//   object-fit: cover;
-// }
+nav-link{
+  background-color: white !important;
+}

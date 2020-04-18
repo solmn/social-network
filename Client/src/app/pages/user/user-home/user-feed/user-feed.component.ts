@@ -1,6 +1,6 @@
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { AuthenticationService, UserService } from "../../../../services";
-import { Post } from "../../../../models";
+import { Post, User } from "../../../../models";
 import { tick } from '@angular/core/testing';
 import  { environment } from '../../../../../environments/environment';
 import { FileHolder, UploadMetadata } from 'angular2-image-upload';
@@ -12,6 +12,8 @@ import { first } from 'rxjs/operators';
   styleUrls: ['./user-feed.component.scss']
 })
 export class UserFeedComponent implements OnInit {
+  index = 0;
+  currentUser: User;
   post_status: boolean = false;
   post_message: "";
   post: Post = new Post();
@@ -53,10 +55,12 @@ export class UserFeedComponent implements OnInit {
     console.log("constructor of Feed component", this.IMG_UPLOD_URL);
 
   }
+
+  
   ngOnInit(): void {
     this.initPost();
      this.fetchPostFeeds();
-
+      this.currentUser = this.userService.getCurrrentUser();
      this.userService.postSubject.subscribe(re => {
        this.fetchPostFeeds();
      })
@@ -143,6 +147,8 @@ export class UserFeedComponent implements OnInit {
     }
     
   }
+
+  
 
 
 

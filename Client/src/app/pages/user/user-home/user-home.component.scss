@@ -7,9 +7,30 @@
 
 .form-control, p, h1, h2, h3, h4, h5, textarea {
   color: black;
+  
+}
+.form-control {
+  border-color: #d6dae6 !important;;
 }
 
 .card {
   background-color: white !important
 }
 
+i.tim-icons{
+  font-size: 40px;
+}
+
+
+.active {
+  color: #018ff9 !important;
+  border-bottom: 3px #018ff9 solid;
+}
+
+.n{
+  color: grey;
+}
+
+.ico {
+  font-size: 20px !important;
+}
