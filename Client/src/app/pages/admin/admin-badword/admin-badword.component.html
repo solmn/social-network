@@ -8,7 +8,7 @@
                 <input formControlName="newBadWord" style="color: black;" type="text" class="form-control" id="nwBadWord" placeholder="new bad word" name="newBadWord " type="text " (focus)="focus=true" (blur)="focus=false ">
             </div>
         </div>
-        <button type="button " class="btn btn-default ">Add Word</button>
+        <button type="button " class="btn btn-default">Add Word</button>
     </form>
 </fieldset>
 
@@ -18,9 +18,9 @@
         <legend class="scheduler-border ">Current Bad Words</legend>
         <div class="col-md-12 ">
             <h4>Click on the word to remove it</h4>
-            <span class="badge badge-default " style="margin: 1%; " *ngFor="let baword of allBwords; let i = index">{{baword}}
-                <button class="btn btn-primary btn-fab btn-icon btn-round" (click)="onRemoveBadWord(i)">
-                    <i class="tim-icons icon-simple-remove "></i>
+            <span class="badge badge-default " style="margin: 1%;background-color:white;color: black; " *ngFor="let baword of allBwords; let i = index">{{baword}}
+                <button class="btn btn-primary btn-fab btn-icon btn-round" style="opacity: 100%;background: white;" (click)="onRemoveBadWord(i)">
+                    <i class="tim-icons icon-simple-remove" style="color: black;"></i>
                </button>
             </span>
         </div>

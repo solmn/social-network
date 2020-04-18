@@ -3,13 +3,23 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Advertisement } from '../models';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../util';
+import { UserService } from './user.service';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
+  allBadWordPosts:[];
 
-  constructor(private http:HttpClient) { }
+
+  constructor(private http:HttpClient) {
+   }
+
+getBadWordPostData(){
+  return this.allBadWordPosts; 
+}
+
 
 getBadWords(){
   return this.http.get<ApiResponse>(environment.API_URL+'/api/admin/get-bad-words');
@@ -35,6 +45,9 @@ creatAdvertisement(newAdvertisement:Advertisement){
 
   return this.http.post<ApiResponse>(environment.API_URL+'/api/admin/create-ad',newAdvertisement);
 }
+editAdvertisement(editedAd, id){
+  return this.http.post<ApiResponse>(environment.API_URL+'/api/admin/edit-ad',{_id:id,edited:editedAd});
+}
 approvePost(post){
 
 return this.http.post<ApiResponse>(environment.API_URL+'api/admin/approve-post',post);
@@ -50,6 +63,13 @@ activateAccount(account){
 getDeactivatedAccounts(){
 
   return this.http.get<ApiResponse>(environment.API_URL+'/api/admin/get-deactivated-account');
+}
+
+getBadWordedPosts(){
+  return this.http.get<ApiResponse>(environment.API_URL+'/api/admin/get-badworded-posts');
+}
+adminPullNotifications(){
+  return this.http.get<ApiResponse>(environment.API_URL+'/api/admin/pull-notifications');
 }
 
 

@@ -1,22 +1,29 @@
 <h4>Review Posts</h4>
-<div class="card post">
-    <div class="card-body">
-        <div class="pic_username">
-            <img src="assets/img/mike.jpg" width=30 class=" rounded-circle">
-            <span>Jenefer Lawrun</span>
-        </div>
-        <div class="post-content">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </p>
-            <img src="https://www.thewowstyle.com/wp-content/uploads/2015/01/nature-desktop-background-1691.jpg" />
-        </div>
-    </div>
-    <div class="card-footer row">
-        <p class="col-sm-6">
-            <button class="btn btn-primary" type="submit" name="acceptBtn" (click)="approvePost(post)">Accept</button>
-        </p>
-        <p class="col-sm-6">
-            <button class="btn btn-primary" type="submit" name="rejectBtn" style="float: right;" (click)="rejectPost(post)">Reject</button>
-        </p>
-    </div>
+<div>
+    <table class="table" style="color: black;">
+        <thead>
+            <tr>
+                <th class="text-center">#</th>
+                <th>Post by</th>
+                <th>Post description</th>
+                <th># of bad posts</th>
+                <th class="text-right" colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let badPost of allBadPosts; let arrayIndex=index">
+                <td class="text-center">index</td>
+                <td>{{badPost.name}}</td>
+                <td>{{badPost.description}}</td>
+                <td>{{badPost.badPostCount}}</td>
+                <td class="td-actions text-right">
+                    <button class="btn btn-white" (click)="acceptBadPost(badPost,index)">Accept Post</button>
+                </td>
+                <td class="td-actions text-right">
+                    <button class="btn btn-danger" (click)="rejectBadPost(badPost,index)">Danger</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
 </div>

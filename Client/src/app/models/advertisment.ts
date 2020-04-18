@@ -5,6 +5,7 @@ export class Advertisement {
     postedBy: Number;
     minAge:Number;
     maxAge:Number;
-    targetLocation:String
+    targetLocation:string;
+    targetType:string
     
 }

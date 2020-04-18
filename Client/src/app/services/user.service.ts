@@ -20,22 +20,35 @@ export class UserService {
 
   public postSubject = new Subject<any>();
   public searchSubject = new BehaviorSubject<Array<Post>>([]);
+  public adminBadPostSubject = new Subject<any>();
 
   // public notificationSubject = new BehaviorSubject<any>();
   
 
   constructor(private http: HttpClient, private authService: AuthenticationService) { 
+    // this.connect();
+    console.log("MOTHER FUCKER", this.authService.getCurrentUser());
   }
 
   public connect() {
       this.socket = new WebSocket(environment.API_SOCKET_URL);
       this.socket.onopen = (event) => {
-          this.socket.send(JSON.stringify({token: this.getCurrrentUser().access_token}));
+          this.socket.send(JSON.stringify({token: this.authService.getCurrentUser().access_token}));
       }
 
       this.socket.onmessage = (event) => {
         this.postSubject.next();
+        this.adminBadPostSubject.next();
+
         console.log(event.data, 'FROM SERVER');
+        
+        if(event.data) {
+          let noti = event.data;
+          if(noti.notiType == 5) {
+            console.log("bad bad bad bad ba ere bad");
+            this.adminBadPostSubject.next();
+          }
+        }
       }
 
   }

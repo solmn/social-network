@@ -3,15 +3,21 @@ const fs = require('fs'),
     util = require('util'),
     { filterService } = require(path.join(__dirname, '..', 'shared')),
     Post = require('../../models/post.model');
+
+let badWordList;
+(async function() {
+    badWordList = await filterService.getBadWordList();
+})();
 // { Post } = path.join(__dirname, '..', '..', 'models');
 /**
  * Checks a word to be a bad word 
  * @param {a word to be checked if is bad word} word 
  */
 
-async function isBadWord(word) {
-    let badWordList = await filterService.getBadWordList();
-    return badWordList.includes(word);
+function isBadWord(word) {
+    console.log('BAD WORD LIST IS: ', badWordList)
+    let contains = badWordList.includes(word);
+    return contains;
 }
 /**
  * Validates if user's post qualifies to be posted 
@@ -20,8 +26,11 @@ async function isBadWord(word) {
 function notSafeForPost(post) {
     let ret = false;
     let listOfPostWords = post.split(' ');
-    listOfPostWords.some((value, index, _arr) => {
+    let listOfPostWordsLoweCase = listOfPostWords.map(eachWord => eachWord.toLowerCase());
+    console.log('TO LOWERCASE:  ', listOfPostWordsLoweCase)
+    listOfPostWordsLoweCase.some((value, index, _arr) => {
         if (isBadWord(value)) {
+            console.log('is bad word ', value)
             ret = true;
             return true;
         }
@@ -60,10 +69,6 @@ async function getSearchResults(searchThis) {
     let results = await Post.find(queries);
     return results;
 }
-
-
-
-
 
 
 module.exports = {

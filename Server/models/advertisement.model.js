@@ -4,7 +4,9 @@ const adSchema = new mongoose.Schema({
     description: {
         type: String
     },
-    imageUrl: [],
+    imageUrl: {
+        type: String
+    },
     postedBy: {
         type: mongoose.Types.ObjectId,
         ref: 'User'
@@ -20,6 +22,9 @@ const adSchema = new mongoose.Schema({
         type: Number
     },
     targetLocation: {
+        type: String
+    },
+    targetType: {
         type: String
     }
 }, { timestamps: true });

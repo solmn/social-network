@@ -6,7 +6,7 @@ import {Advertisement, User} from '../../../models';
 import { from } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/services';
-import { LinkyModule } from 'angular-linky';
+
 
 
 @Component({
@@ -43,6 +43,7 @@ export class AdminAdvertismentComponent implements OnInit {
   imageUrl:string; 
   advertisements: Advertisement;
   advertisementForm: FormGroup;
+  advertisementEditForm: FormGroup;
   allAdvertisements:Array<Advertisement>
   loading = false;
   submitted = false;
@@ -62,13 +63,23 @@ export class AdminAdvertismentComponent implements OnInit {
 
         this.advertisementForm = this.formBuilder.group({
           advertisementDescriptionTextArea:['',Validators.required],
-          targetAgeCheckBox:[''],
-          minAge:[''],
-          maxAge:[''],
-          targetLocationCheckBox:[''],
+          targetAgeCheckBox:[],
+          minAge:['0'],
+          maxAge:['100'],
+          targetLocationCheckBox:[],
           location:['']
           
         });
+        this.advertisementEditForm = this.formBuilder.group({
+          editDescription:['sfasd'],
+          editTargetAgeCheckBox:['asdf'],
+          editMinAge:[''],
+          editMaxAge:[''],
+          editLocationCheckBox:[''],
+          editLocation:['']
+
+        });
+
     }
   ngOnInit(): void {
     this.adminService.getAllAdvertisements().pipe(first())
@@ -100,8 +111,6 @@ export class AdminAdvertismentComponent implements OnInit {
       this.submitted = true;
      if(this.advertisementForm.invalid) return;
      this.advertDetails = this.advertisementForm.value;
-     if(this.advertDetails.targetAgeCheckBox &&(this.advertDetails.minAge ==='' && this.advertDetails.maxAge==='')) return;
-     else if(this.advertDetails.targetLocationCheckBox && this.advertDetails.location==='')return;
      let newAdvertisement = new Advertisement();
      newAdvertisement.description = this.advertDetails.advertisementDescriptionTextArea;
      if(this.imageUrl===undefined){
@@ -112,6 +121,21 @@ export class AdminAdvertismentComponent implements OnInit {
      newAdvertisement.minAge = this.advertDetails.minAge;
      newAdvertisement.maxAge = this.advertDetails.maxAge;
      newAdvertisement.targetLocation = this.advertDetails.location; 
+console.log("ADVERTISEMENTS   TARGTE AGE.......",this.advertDetails.targetAgeCheckBox)
+console.log("ADVERTISEMENTS   TARGTE LOCATION.......",this.advertDetails.targetLocationCheckBox)
+     if(this.advertDetails.targetAgeCheckBox ===true&& this.advertDetails.targetLocationCheckBox ===true){
+       newAdvertisement.targetType ='both';
+  
+    }else if(this.advertDetails.targetAgeCheckBox ===null&& this.advertDetails.targetLocationCheckBox===true){
+        newAdvertisement.targetType ='location';
+ 
+    }else if(this.advertDetails.targetAgeCheckBox ===true && this.advertDetails.targetLocationCheckBox===null){
+        newAdvertisement.targetType ='age';
+
+    }else{
+      newAdvertisement.targetType ='all';
+
+    }
      this.adminService.creatAdvertisement(newAdvertisement)
                       .pipe(first())
                       .subscribe(response=>{
@@ -124,6 +148,34 @@ export class AdminAdvertismentComponent implements OnInit {
                       });
 
     }
+
+
+    editAdvertisement(index){
+      console.log('working.........')
+      this.submitted = true;
+     if(this.advertisementEditForm.invalid) return;
+     this.advertDetails = this.advertisementEditForm.value;
+     if(this.advertDetails.targetAgeCheckBox &&(this.advertDetails.minAge ==='' && this.advertDetails.maxAge==='')) return;
+     else if(this.advertDetails.editLocationCheckBox && this.advertDetails.editLocation==='')return;
+     let editedAdvertisement = this.allAdvertisements[index];
+     editedAdvertisement.description = this.advertDetails.editDescription;
+     editedAdvertisement.minAge = this.advertDetails.editMinAge;
+     editedAdvertisement.maxAge = this.advertDetails.editMaxAge;
+     editedAdvertisement.targetLocation= this.advertDetails.editLocation;
+     this.adminService.editAdvertisement(editedAdvertisement, editedAdvertisement._id)
+                      .pipe(first())
+                      .subscribe(response=>{
+                        if(response.status ===501){
+
+                        }else{
+                          this.allAdvertisements[index]=response.result;
+
+                        }
+                      });
+
+
+    }
+
 
     /**
      * toggle advertisement pane
@@ -140,7 +192,9 @@ export class AdminAdvertismentComponent implements OnInit {
    
     }
 
+identifyTarget(){
 
+}
     /**
      * EDIT ADVERTISEMENT
      */

@@ -16,6 +16,7 @@ router.post('/approve-post', adminController.approvePost);
 router.post('/reject-post', adminController.rejectPost);
 router.post('/activate-user-account', adminController.activateUserAccount);
 router.get('/get-deactivated-account', adminController.getDeactivatedUserAccounts)
+router.get('/get-badworded-posts', adminController.getBadWordedPosts)
 
 
 module.exports = router;

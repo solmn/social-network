@@ -35,6 +35,7 @@ export class AdminBadwordComponent implements OnInit {
  onAddNewBadWord(){
   this.submitted = true;
   if(this.badWordForm.invalid) return;
+  console.log('THE BAD WORD IS', this.badWordForm.value)
   this.adminService.addBadWord(this.badWordForm.value)
                   .pipe(first())
                   .subscribe(
@@ -45,6 +46,7 @@ export class AdminBadwordComponent implements OnInit {
                         this.error = data.message;
                       }
                       else{
+                        console.log(data.result)
                         this.allBwords = data.result.badwords
                       }
 
