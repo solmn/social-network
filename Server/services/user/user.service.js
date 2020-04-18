@@ -29,14 +29,14 @@ async function createPost(userId, data, app) {
     let result;
     let review = await systemService.notSafeForPost(data.description);
     console.log("REVIEW RESULT", review);
-    // if(review) {
-    //     post.status = "onhold";
-    //     result = await post.save();
-    //     await notificationService.badPostNotification(userId, result, app);
+    if (review) {
+        post.status = "onhold";
+        result = await post.save();
+        await notificationService.badPostNotification(userId, result, app);
 
-    // }else {
-    //     result = await post.save();
-    //     await notificationService.newPostNotification(userId, result, app);
+    } else {
+        result = await post.save();
+        await notificationService.newPostNotification(userId, result, app);
 
     // }
     result = await post.save();
