@@ -5,35 +5,43 @@
               <div class="card-body">
                 <form class="form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
 
-                  <div class="input-group" [ngClass]="{ 'input-group-focus': focus === true }">
+                  <div class="input-group" >
+                 
                     <div class="input-group-prepend">
                       <div class="input-group-text">
                         <i class="tim-icons icon-single-02"> </i>
                       </div>
                     </div>
                     <input
+                    [ngClass]="{'is-invalid':signupForm.get('username').touched && signupForm.get('username').invalid}" required
                       formControlName="username"
                       class="form-control"
                       placeholder="User name"
                       type="text"
                       (focus)="focus = true"
                       (blur)="focus = false" />
-
-                  </div>
-                  <div class="input-group" [ngClass]="{ 'input-group-focus': focus === true }">
+                      <div class="invalid-feedback">
+                        <div>User Name is required</div>
+                      </div>
+                    </div>
+                  
+                  <div class="input-group" >
                     <div class="input-group-prepend">
                       <div class="input-group-text">
                         <i class="tim-icons icon-single-02"> </i>
                       </div>
                     </div>
                     <input
+                    [ngClass]="{'is-invalid':signupForm.get('firstname').touched && signupForm.get('firstname').invalid}" required
                       formControlName="firstname"
                       class="form-control"
                       placeholder="First name"
                       type="text"
                       (focus)="focus = true"
                       (blur)="focus = false" />
-
+                      <div class="invalid-feedback">
+                        <div>First Name is required</div>
+                      </div>
                   </div>
 
                   <div class="input-group"  [ngClass]="{ 'input-group-focus': focus === true }" >
@@ -42,19 +50,26 @@
                           <i class="tim-icons icon-single-02"> </i>
                         </div>
                     </div>
-                    <input
+                    <input 
+                    [ngClass]="{'is-invalid':signupForm.get('firstname').touched && signupForm.get('firstname').invalid}" required
                       formControlName="lastname"
                       class="form-control"
                       placeholder="Last name"
                       type="text"
                       (focus)="focus = true"
                       (blur)="focus = false"/>
+
+                      <div class="invalid-feedback">
+                        <div>Last Name is required</div>
+                      </div>
                   </div>
+
                   <div class="input-group"  [ngClass]="{ 'input-group-focus': focus === true }" >
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                           <i class="tim-icons icon-calendar-60"> </i>
                         </div>
+                        
                     </div>
                     <input type="text"
                        formControlName="birthdate"
@@ -71,6 +86,7 @@
                       </div>
                     </div>
                     <input
+                    [ngClass]="{'is-invalid':signupForm.get('email').touched && signupForm.get('email').invalid}" required
                       formControlName="email"
                       class="form-control"
                       placeholder="Email"
@@ -78,6 +94,11 @@
                       (focus)="focus1 = true"
                       (blur)="focus1 = false"
                     />
+                    <div *ngIf="signupForm.get('email').touched && signupForm.get('email').invalid"  class="invalid-feedback">
+                      <div *ngIf="signupForm.get('email').errors.required">Email Name is required</div>
+                      <div *ngIf="signupForm.get('email').errors.email">Email must be a valid email Address</div>
+                    </div>
+
                   </div>
 
                   <div class="input-group" [ngClass]="{ 'input-group-focus': focus1 === true }">
@@ -87,6 +108,7 @@
                       </div>
                     </div>
                     <input
+                    [ngClass]="{'is-invalid':signupForm.get('location').touched && signupForm.get('location').invalid}" required
                       formControlName="location"
                       class="form-control"
                       placeholder="Location"
@@ -94,6 +116,10 @@
                       (focus)="focus1 = true"
                       (blur)="focus1 = false"
                     />
+                    <div class="invalid-feedback">
+                      <div>Location is required</div>
+                    </div>
+
                   </div>
 
                   <div
@@ -106,6 +132,7 @@
                       </div>
                     </div>
                     <input
+                    [ngClass]="{'is-invalid':signupForm.get('password').touched && signupForm.get('password').invalid}"
                     formControlName="password"
                       class="form-control"
                       placeholder="Password"
@@ -113,6 +140,12 @@
                       (focus)="focus2 = true"
                       (blur)="focus2 = false"
                     />
+
+                    <div *ngIf="signupForm.get('password').touched && signupForm.get('password').invalid"  class="invalid-feedback">
+                      <div *ngIf="signupForm.get('password').errors.required">Password is required</div>
+                      <div *ngIf="signupForm.get('password').errors.minlength">Password  must be at least 6 charector</div>
+                    </div>
+
                   </div>
                   <!-- <div class="form-check text-left">
                     <label class="form-check-label">
@@ -122,7 +155,7 @@
                       <a href="javascript:void(0)"> terms and conditions </a> .
                     </label>
                   </div> -->
-                  <button [disabled]="loading" class="btn btn-primary btn-neutral" >Signup</button>
+                  <button [disabled]="signupForm.valid" class="btn btn-primary btn-neutral" >Signup</button>
                   <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                 </form>
                 <p style="color: red;" *ngIf="error">{{error}}</p>

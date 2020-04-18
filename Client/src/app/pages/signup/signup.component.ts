@@ -30,15 +30,19 @@ export class SignupComponent implements OnInit {
         lastname:  ['', Validators.required],
         birthdate: ['', Validators.required],
         location:  ['', Validators.required],
-        email:     ['', Validators.required],
-        password:  ['', Validators.required]
+        email:     ['', Validators.required, 
+                         Validators.email],
+        password:  ['', Validators.required,
+                        Validators.minLength(6)]
      });
   }
 
   getF() {
     return this.signupForm.controls;
   }
-  
+  get firstname(){
+    return this.signupForm.get('firstName')
+  }
   onSubmit() {
     this.submitted = true;
     if(this.signupForm.invalid) return;
