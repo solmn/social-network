@@ -315,7 +315,9 @@ async function _getUser(userId) {
     return await User.findById({ _id: userId });
 }
 
-async function fetchFeed(userId) {
+async function fetchFeed(userId, page) {
+    let Limit = 8;
+    page = page || 1;
     let user = await _getUser(userId);
     let followings = user.following;
     followings = followings.map(f => f.followerID);
@@ -323,7 +325,9 @@ async function fetchFeed(userId) {
     let result = await Post.find({ postedBy: { $in: followings }, status: "ok" })
         .populate("postedBy")
         .populate("comments.commentedBy")
-        .sort({ createdAt: "desc" });
+        .sort({ createdAt: "desc" })
+        .skip(Limit * page - Limit)
+        .limit(Limit);
     return new ApiResponse(200, "success", result);
 }
 

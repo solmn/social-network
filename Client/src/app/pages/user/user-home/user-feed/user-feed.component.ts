@@ -1,4 +1,4 @@
-import { Component, OnInit , ViewChild } from '@angular/core';
+import { Component, OnInit , ViewChild, HostListener } from '@angular/core';
 import { AuthenticationService, UserService } from "../../../../services";
 import { Post, User } from "../../../../models";
 import { tick } from '@angular/core/testing';
@@ -12,6 +12,7 @@ import { first } from 'rxjs/operators';
   styleUrls: ['./user-feed.component.scss']
 })
 export class UserFeedComponent implements OnInit {
+  loading = false;
   index = 0;
   currentUser: User;
   post_status: boolean = false;
@@ -51,6 +52,8 @@ export class UserFeedComponent implements OnInit {
     }
   }
   feeds = [];
+  page = 1;
+  end = false;
   constructor(private userService: UserService) {
     console.log("constructor of Feed component", this.IMG_UPLOD_URL);
 
@@ -63,12 +66,51 @@ export class UserFeedComponent implements OnInit {
       this.currentUser = this.userService.getCurrrentUser();
      this.userService.postSubject.subscribe(re => {
        this.fetchPostFeeds();
+       this.end = false;
      })
+  }
+  
+@HostListener("window:scroll", [])
+onWindowScroll() {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        this.loadMoreFeeds();
+    }
+
+}
+
+  loadMoreFeeds() {
+    if(!this.end) {
+      console.log("Loading more feeds");
+      this.loading = true;
+       this.page +=1;
+       this.userService.fetchFeed(this.page).pipe(first())
+            .subscribe(respose => {
+              console.log("wowowowow",respose.result, "====>>>>")
+              this.loading = false;
+              if(respose.result.size > 0) {
+                this.feeds = this.feeds.concat(respose.result);
+                console.log("MORE FEED", respose.result);
+              }
+              if(respose.result.length < 7) {
+                this.end = true;
+              }else {
+                this.end = false;
+              }
+              console.log(this.end, respose.result.length)
+              
+              
+            }, err => {
+              console.log(err);
+            })
+    }
+    
   }
 
   fetchPostFeeds() {
+    this.loading = true;
     this.userService.fetchFeed().pipe(first())
     .subscribe(respose => {
+      this.loading = true;
       this.feeds = respose.result;
       console.log("WOOOW my feeds", respose.result);
     }, err => {

@@ -80,8 +80,12 @@ export class UserService {
   unFollow(id) {
     return this.http.post<ApiResponse>(environment.API_URL + "/api/user/unfollow/"+ id, {});
   }
-  fetchFeed() {
-    return this.http.get<ApiResponse>(environment.API_URL + "/api/user/feetch-feeds");
+  fetchFeed(page?: number) {
+    let u ="/api/user/feetch-feeds"
+    if(page) {
+      u = u + "?page="+ page;
+    }
+    return this.http.get<ApiResponse>(environment.API_URL + u);
   }
 
   addComment(postId, data) {

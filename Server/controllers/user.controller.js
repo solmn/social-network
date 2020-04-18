@@ -145,7 +145,7 @@ exports.fetchFeed = async(req, res, next) => {
     console.log(req.userId, "IS MY ID");
 
     try {
-        let response = await userService.fetchFeed(req.userId);
+        let response = await userService.fetchFeed(req.userId, req.query.page);
         res.status(response.status).json(response);
     } catch (err) {
         console.log(err);
