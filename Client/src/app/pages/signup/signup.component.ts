@@ -3,6 +3,7 @@ import { AuthenticationService, UserService } from "../../services";
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-signup',
@@ -15,6 +16,7 @@ export class SignupComponent implements OnInit {
   submitted = false;
   error = "";
   constructor(
+    private toastr: ToastrService,
     private formBuilder: FormBuilder,
     private router: Router,
     private userService:UserService,
@@ -52,11 +54,19 @@ export class SignupComponent implements OnInit {
               this.error = data.message;
             }
             else {
+              this.toastr.success('Successfully registered');
               this.router.navigate(['/login']);
             }
            
           },
           error => {
+            if(error.error) {
+              this.toastr.error(error.error.result.err, 'Error', {
+                timeOut: 5000
+              });
+            }
+            console.log(error);
+            
             this.loading = false;
           }
         );

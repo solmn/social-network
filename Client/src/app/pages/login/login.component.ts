@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
         .subscribe(
           data => {
             this.toastr.success('Successfully logged in');
-            this.router.navigate(['/']);
+            this.router.navigate([this.returnUrl]);
           },
           error => {
             this.toastr.error(error.error.result.err, 'Error', {

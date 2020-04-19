@@ -26,16 +26,26 @@ async function createPost(userId, data, app) {
 
     });
     let result;
+    console.log("..................................REVIWING.....................................")
     let failsReview = await systemService.notSafeForPost(data.description);
+    console.log("REVIEW RESULT....", failsReview);
+
     if (failsReview) {
         post.status = "onhold";
         result = await post.save();
+        console.log("Account on hold, NOT HEALTHY....", failsReview);
         await notificationService.badPostNotification(userId, result, app);
+        console.log("BAD POST NOTIFICATION SENT for Both ADMIN And USER....", failsReview);
 
     } else {
+        console.log("REVIEW RESULT.... HEALTHY");
         result = await post.save();
         if(data.notify) {
+            console.log("SENDING NOTI to followers");
             await notificationService.newPostNotification(userId, result, app);
+        }
+        else {
+            console.log("NOTIFICAION MUTED BY THE USER");
         }
     }
     return new ApiResponse(200, "success", result);
