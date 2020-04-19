@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from 'src/app/services/admin.service';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AdminHomeComponent } from '../admin-home/admin-home.component';
+import { UserService } from 'src/app/services';
 
 @Component({
   selector: 'app-admin-badword',
@@ -17,13 +19,20 @@ export class AdminBadwordComponent implements OnInit {
   nameIndex = 0;
   error = "";
   allBwords:Array<string>;
+  allDeactivatedAccounts:any
+  
 
-  constructor(private adminService:AdminService, 
+  constructor(private adminService:AdminService, private userService:UserService,
     private formBuilder: FormBuilder ) { 
 
         this.badWordForm = this.formBuilder.group({
           newBadWord:['',Validators.required]
         });
+        this.userService.adminBadPostSubject.subscribe(response=>{
+          this.getAllDeactiveAccounts();
+        });
+ 
+
     }
   ngOnInit(): void {
       this.adminService.getBadWords().pipe(first())
@@ -32,10 +41,17 @@ export class AdminBadwordComponent implements OnInit {
                                   console.log(this.allBwords)
           });
  }
- onAddNewBadWord(){
+
+
+getAllDeactiveAccounts(){
+  this.adminService.getDeactivatedAccounts().pipe(first())
+                   .subscribe(response=>{
+                     this.allDeactivatedAccounts = response.result; 
+                   })
+}
+onAddNewBadWord(){
   this.submitted = true;
   if(this.badWordForm.invalid) return;
-  console.log('THE BAD WORD IS', this.badWordForm.value)
   this.adminService.addBadWord(this.badWordForm.value)
                   .pipe(first())
                   .subscribe(
@@ -55,7 +71,7 @@ export class AdminBadwordComponent implements OnInit {
 
    
  }
- onRemoveBadWord(index){ 
+onRemoveBadWord(index){ 
   this.allBwords.splice(index,1);
    this.adminService.updateBadWords(this.allBwords)
                         .pipe(first())
@@ -82,5 +98,23 @@ export class AdminBadwordComponent implements OnInit {
    }
 
  }
+ activateAccount(deactiveAccount, index){
+  this.adminService.activateAccount(deactiveAccount).pipe(first())
+                  .subscribe(response=>{
+                    this.sendEmail(deactiveAccount.email); 
+                    this.allDeactivatedAccounts.splice(index,1);
+                  });
+ 
+ }
+
+sendEmail(email){
+  console.log('email', email)
+  this.adminService.accountActivateEmail(email).pipe(first())
+                   .subscribe(response=>{
+                     console.log('MAIL DELIEVER.....', response.result)
+                   });
+ 
+}
+
 
 }

@@ -40,6 +40,7 @@ export class UserService {
       this.socket.onmessage = (event) => {
         this.postSubject.next();
         this.adminBadPostSubject.next();
+        console.log(event.data, 'FROM SERVER');
         this.tostService.success(event.data.message);
       }
 

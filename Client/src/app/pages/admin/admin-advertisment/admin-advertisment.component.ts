@@ -6,6 +6,7 @@ import {Advertisement, User} from '../../../models';
 import { from } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/services';
+import { environment } from '../../../../environments/environment';
 
 
 
@@ -40,7 +41,7 @@ export class AdminAdvertismentComponent implements OnInit {
       "border-radius": "0 0 25px 25px",
     }
   }
-  imageUrl:string; 
+  imageUrl:string;
   advertisements: Advertisement;
   advertisementForm: FormGroup;
   advertisementEditForm: FormGroup;
@@ -96,8 +97,8 @@ export class AdminAdvertismentComponent implements OnInit {
 
 
   onUploadFinished(file: FileHolder) {
-    this.imageUrl = file.serverResponse.response.body; 
-    console.log(this.imageUrl);
+    this.imageUrl =file.serverResponse.response.body; 
+    console.log('image url is ',this.imageUrl);
   }
 
 
@@ -114,15 +115,15 @@ export class AdminAdvertismentComponent implements OnInit {
      let newAdvertisement = new Advertisement();
      newAdvertisement.description = this.advertDetails.advertisementDescriptionTextArea;
      if(this.imageUrl===undefined){
-       this.imageUrl ='';
+      newAdvertisement.imageUrl = '';
      }
-     newAdvertisement.imageUrl = this.imageUrl;
+    else{
+      newAdvertisement.imageUrl = environment.API_URL+"/"+this.imageUrl;
+    }
      newAdvertisement.postedBy =this.authenticationService.getCurrentUser()._id;
      newAdvertisement.minAge = this.advertDetails.minAge;
      newAdvertisement.maxAge = this.advertDetails.maxAge;
      newAdvertisement.targetLocation = this.advertDetails.location; 
-console.log("ADVERTISEMENTS   TARGTE AGE.......",this.advertDetails.targetAgeCheckBox)
-console.log("ADVERTISEMENTS   TARGTE LOCATION.......",this.advertDetails.targetLocationCheckBox)
      if(this.advertDetails.targetAgeCheckBox ===true&& this.advertDetails.targetLocationCheckBox ===true){
        newAdvertisement.targetType ='both';
   

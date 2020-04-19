@@ -46,6 +46,11 @@ th {
 
 thead {
     display: table-header-group;
+    background-color: #a6a6a6;
     vertical-align: middle;
     border-color: inherit;
+}
+
+.table>tbody>tr>td {
+    color: black !important;
 }

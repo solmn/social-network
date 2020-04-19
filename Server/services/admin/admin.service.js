@@ -1,6 +1,6 @@
 const
     path = require('path'),
-    { ApiResponse } = require(path.join(__dirname, "..", "..", "util")),
+    { ApiResponse, notiType } = require(path.join(__dirname, "..", "..", "util")),
     { Ad, User, Post } = require(path.join(__dirname, '..', '..', 'models')),
     { filterService } = require(path.join(__dirname, '..', 'shared'));
 
@@ -93,32 +93,53 @@ async function deleteAd(id) {
     return result;
 }
 
-async function approveThisPost(thisPost) {
-    let result = await Post.findOneAndUpdate({ _id: thisPost._id }, { status: 'okay' });
+async function approveThisPost(adminId, body) {
+    let result = await Post.updateOne({ _id: body.postId }, { status: 'okay' });
+    let ademin = await User.updateOne({ _id: adminId }, {
+        $pull: {
+            notifications: { _id: body.notiId }
+        }
+    });
     return result;
 }
 
-async function rejectThisPost(thisPost) {
-    let result = await Post.findOneAndUpdate({ _id: thisPost._id }, { status: 'blocked', badPostCount: thisPost.badPostCount + 1 });
+async function rejectThisPost(adminId, body) {
+    let result = await Post.updateOne({ _id: body.postId }, { status: 'blocked' });
+    let result2 = await User.updateOne({ _id: body.userId }, { $inc: { badPostCount: 1 } });
+    let admin = await User.updateOne({ _id: adminId }, {
+        $pull: {
+            notifications: { _id: body.notiId }
+        }
+    });
     return result;
 }
 
 async function activateThisAccount(thisUserAccount) {
-    let result = await User.findOneAndUpdate({ _id: thisUserAccount._id }, { status: 'active' });
+    let result = await User.updateOne({ _id: thisUserAccount }, { $set: { status: 'active' } });
     return result;
 }
 
 async function getDeactivatedAccounts() {
-    let results = await User.find({ status: 'blocked' }, { _id: 1, firstname: 1, lastname: 1, email: 1 });
+    let results = await User.find({ status: 'deactivated' });
     return results;
 }
 
-// async function getBadWordedPosts() {
-//     let results = await User.find({ 'notifications.notiType': {} })
-
-
-// }
-
+async function getPostToReview(id) {
+    let results = await User.findOne({ $and: [{ _id: id }, { 'notifications.notiType': 5 }] }, { notifications: 1 })
+        .populate('notifications.user')
+        .populate('notifications.post');
+    return results.notifications;
+}
+async function deactivateThisAccount(data) {
+    let deactivatedUser = await User.updateOne({ _id: data.userId }, { $set: { status: 'deactivated' } });
+    let blockedPost = await Post.updateOne({ _id: data.postId }, { $set: { status: "blocked" } });
+    let admin = await User.updateOne({ _id: data.notiId }, {
+        $pull: {
+            notifications: { _id: body.notiId }
+        }
+    });
+    return { deactivatedUser, blockedPost, admin };
+}
 module.exports = {
     deleteAd,
     addBadWord,
@@ -134,5 +155,7 @@ module.exports = {
     rejectThisPost,
     activateThisAccount,
     getDeactivatedAccounts,
-    // getBadWordedPosts
+    getPostToReview,
+    deactivateThisAccount
+
 }
