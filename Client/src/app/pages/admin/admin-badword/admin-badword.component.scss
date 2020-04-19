@@ -25,3 +25,70 @@ bad-word-button {
     background-color: whitesmoke;
     color: black;
 }
+
+.card.create-post {
+    background-color: white;
+    border-radius: 14px;
+    margin-top: 3px;
+}
+
+.pic_username span {
+    color: black;
+    margin-left: 16px
+}
+
+.card {
+    background-color: white;
+}
+
+p {
+    color: black
+}
+
+.post-content img {
+    object-fit: cover;
+}
+
+h4 {
+    color: black;
+}
+
+h4 {
+    color: black;
+}
+
+.table>thead>tr>th {
+    border-bottom-width: 1px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 700;
+    border: 0;
+    color: rgba(16, 16, 16, 0.7);
+}
+
+th {
+    text-align: inherit;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+.table>tbody>tr>td {
+    color: black !important;
+}
+
+#wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
