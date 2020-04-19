@@ -4,7 +4,10 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+ 
+import { ToastrModule } from 'ngx-toastr';
+ 
 import {TimeAgoPipe} from 'time-ago-pipe';
 import { FileUploadModule } from 'ng2-file-upload';
 
@@ -23,10 +26,6 @@ import { ModalModule } from "ngx-bootstrap/modal";
 import { JwBootstrapSwitchNg2Module } from "jw-bootstrap-switch-ng2";
 import { PopoverModule } from "ngx-bootstrap/popover";
 
-import { IndexComponent } from "./index/index.component";
-import { ProfilepageComponent } from "./examples/profilepage/profilepage.component";
-import { RegisterpageComponent } from "./examples/registerpage/registerpage.component";
-import { LandingpageComponent } from "./examples/landingpage/landingpage.component";
 import { HomeComponent } from './home/home.component';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
@@ -55,6 +54,9 @@ import { LinkyModule } from 'ngx-linky';
 import { ActivateComponent } from './activate/activate.component';
 @NgModule({
   imports: [
+    CommonModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(), // ToastrModule added
     LinkyModule,
     NotifierModule,
     FileUploadModule,
@@ -79,10 +81,6 @@ import { ActivateComponent } from './activate/activate.component';
   ],
   declarations: [
     TimeAgoPipe,
-    IndexComponent,
-    ProfilepageComponent,
-    RegisterpageComponent,
-    LandingpageComponent,
     HomeComponent,
     SignupComponent,
     LoginComponent,
@@ -109,10 +107,6 @@ import { ActivateComponent } from './activate/activate.component';
     ActivateComponent
   ],
   exports: [
-    IndexComponent,
-    ProfilepageComponent,
-    RegisterpageComponent,
-    LandingpageComponent
   ],
   providers: []
 })

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 import { AuthenticationService } from '../../services';
 
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
   error = '';
 
   constructor(
+    private toastr: ToastrService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -49,10 +51,13 @@ export class LoginComponent implements OnInit {
         .pipe(first())
         .subscribe(
           data => {
-            console.log(data, "LOGIN");
-            this.router.navigate([this.returnUrl]);
+            this.toastr.success('Successfully logged in');
+            this.router.navigate(['/']);
           },
           error => {
+            this.toastr.error(error.error.result.err, 'Error', {
+              timeOut: 5000
+            });
             this.error = error;
             this.loading = false;
           }

@@ -40,7 +40,9 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label> Birthdate </label>
-                      <input type="text" formControlName="birthdate"
+                      <input
+                        [value]="changeProfileForm.get('birthdate').value | date: 'dd/MM/yyyy'"
+                        formControlName="birthdate"
                         bsDatepicker
                          placeholder="02/03/2020"
                          class="form-control">

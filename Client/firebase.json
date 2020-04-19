@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/blk-design-system-angular",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

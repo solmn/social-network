@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit {
      this.changeProfileForm = this.formBuilder.group({
         firstname: [this.user.firstname, Validators.required],
         lastname:  [this.user.lastname, Validators.required],
-        birthdate: [new DatePipe('en-US').transform(this.user.birthdate, 'dd/MM/yyyy'), Validators.required],
+        birthdate: [this.user.birthdate, Validators.required],
         location:  [this.user.location, Validators.required],
         email:     [this.user.email, Validators.required],
      });
@@ -37,6 +37,7 @@ export class ProfileComponent implements OnInit {
   }
   
   onSubmit() {
+    console.log(this.changeProfileForm.value, "IS VALUE");
     let data = this.changeProfileForm.value;
     this.user.firstname = data.firstname;
     this.user.lastname = data.lastname;
