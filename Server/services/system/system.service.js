@@ -15,8 +15,8 @@ let badWordList;
  */
 
 function isBadWord(word) {
-    console.log('BAD WORD LIST IS: ', badWordList)
-    let contains = badWordList.includes(word);
+    // console.log('BAD WORD LIST IS: ', badWordList, word.toLowerCase());
+    let contains = badWordList.map(w => w.toLowerCase()).includes(word.toLowerCase());
     return contains;
 }
 /**
