@@ -45,7 +45,6 @@ export class UserService {
         if(event.data) {
           let noti = event.data;
           if(noti.notiType == 5) {
-            console.log("bad bad bad bad ba ere bad");
             this.adminBadPostSubject.next();
           }
         }
