@@ -6,21 +6,21 @@
                 <th class="text-center">#</th>
                 <th>Post by</th>
                 <th>Post description</th>
-                <th># of bad posts</th>
-                <th class="text-right" colspan="2">Actions</th>
+                <th>Number of bad posts</th>
+                <th class="text-center" colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let badPost of allBadPosts; let arrayIndex=index">
-                <td class="text-center">index</td>
-                <td>{{badPost.name}}</td>
-                <td>{{badPost.description}}</td>
-                <td>{{badPost.badPostCount}}</td>
-                <td class="td-actions text-right">
-                    <button class="btn btn-white" (click)="acceptBadPost(badPost,index)">Accept Post</button>
+                <td class="text-center">{{arrayIndex+1}}</td>
+                <td>{{badPost.user.firstname}}</td>
+                <td>{{badPost.post.description}}</td>
+                <td>{{badPost.user.badPostCount}}</td>
+                <td class="td-actions text-center">
+                    <button class="btn btn-sm btn-white" (click)="acceptBadPost(badPost,arrayIndex)">Accept</button>
                 </td>
-                <td class="td-actions text-right">
-                    <button class="btn btn-danger" (click)="rejectBadPost(badPost,index)">Danger</button>
+                <td class="td-actions text-center">
+                    <button class="btn btn-sm btn-danger" (click)="rejectBadPost(badPost,arrayIndex)">Reject</button>
                 </td>
             </tr>
         </tbody>
