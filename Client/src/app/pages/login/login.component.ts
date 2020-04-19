@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
         .pipe(first())
         .subscribe(
           data => {
-
+            console.log(data, "LOGIN");
             this.router.navigate([this.returnUrl]);
           },
           error => {

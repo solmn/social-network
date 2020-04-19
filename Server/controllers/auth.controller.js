@@ -46,3 +46,13 @@ exports.resetPassword  = async (req, res, next) => {
     }
 }
 
+exports.activate = async (req, res, next) => {
+    try {
+        let response = await authService.activate(req.body.username, req.body.password, req.app);
+        res.status(response.status).json(response);
+    }catch(err) {
+        console.log(err);
+        res.status(500).json(new ApiResponse(500, 'error', err));
+    }
+}
+

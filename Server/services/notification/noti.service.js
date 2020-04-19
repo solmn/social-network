@@ -109,9 +109,25 @@ async function badPostNotification(userId, post, app) {
     let admin = await User.findOne({role: "ADMIN"});
     if(admin) {
         sendNotification([admin._id], notiA, app);
-        addNotification([admin._id], notiA);
+        await addNotification([admin._id], notiA);
     }
     
+    
+}
+
+async function accountActivationNotification(userId, app) {
+    let u = await User.findById({_id: userId});
+    let notiA = {
+        notiType: notiTypes.POST_FLAGGED,
+        message: u.username + " requisted for account activation",
+        user: userId,
+    };
+
+    let admin = await User.findOne({role: "ADMIN"});
+    if(admin) {
+        sendNotification([admin._id], notiA, app);
+       await addNotification([admin._id], notiA);
+    }
     
 }
 
@@ -133,5 +149,6 @@ module.exports = {
     commentNotification,
     likeNotification,
     badPostNotification,
-    followNotification
+    followNotification,
+    accountActivationNotification
 }

@@ -14,4 +14,5 @@ export class User {
   photo: any;
   notifications: any[];
   email: any;
+  status: string;
 }

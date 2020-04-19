@@ -52,6 +52,7 @@ import { FollowingsComponent } from './user/user-home/explore/followings/followi
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
 import { LinkyModule } from 'ngx-linky';
+import { ActivateComponent } from './activate/activate.component';
 @NgModule({
   imports: [
     LinkyModule,
@@ -104,7 +105,8 @@ import { LinkyModule } from 'ngx-linky';
     FollowersComponent,
     FollowingsComponent,
     ForgotPasswordComponent,
-    NewPasswordComponent
+    NewPasswordComponent,
+    ActivateComponent
   ],
   exports: [
     IndexComponent,

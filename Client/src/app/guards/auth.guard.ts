@@ -2,24 +2,32 @@ import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { AuthenticationService } from '../services';
+import { User } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
+    currentUser: User;
     constructor(
         private router: Router,
         private authService: AuthenticationService
     ) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const currentUser = this.authService.getCurrentUser();
+        this.currentUser = this.authService.getCurrentUser();
         if (this.authService.isUserAuthenticated()) {
+            if(this.currentUser.status === "deactivated" || this.currentUser.status ==="requested") {
+                
+                this.authService.logout();
+                this.router.navigate(['/activate-account']);
+                console.log("DEACTIVATED");
+            }
             // check if route is restricted by role
-            if (route.data.role && route.data.role !== currentUser.role) {
+            if (route.data.role && route.data.role !== this.currentUser.role) {
                 // role not authorised so redirect to home page
+                
                 this.router.navigate(['/']);
                 return false;
             }
-            console.log("AUTHORIZED", route.data, currentUser.role);
 
             // authorised so return true
             return true;

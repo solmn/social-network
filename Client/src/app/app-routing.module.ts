@@ -20,6 +20,8 @@ import { AuthGuard } from "./guards";
 import { AdminHomeComponent} from './pages/admin/admin-home/admin-home.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { NewPasswordComponent } from './pages/new-password/new-password.component';
+import { ActivateComponent } from './pages/activate/activate.component';
+
 // this.route.snapshot.paramMap.get("token")
 import { Role } from './models';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -50,6 +52,7 @@ const routes: Routes = [
   },
   { path: "signup", component: SignupComponent },
   { path: "login", component: LoginComponent },
+  { path: "activate-account", component: ActivateComponent},
   { path: "admin", 
     data: {role: Role.Admin}, 
     canActivate: [AuthGuard],
