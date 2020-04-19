@@ -73,7 +73,7 @@ activateAccount(accountId){
   return this.http.post<ApiResponse>(environment.API_URL+'/api/admin/activate-user-account',accountId);
 }
 accountActivateEmail(email) {
-  return this.http.post<ApiResponse>(environment.API_URL + "/api/auth/activate-account", {email: email});
+  return this.http.post<ApiResponse>(environment.API_URL + "/api/auth/activate-acc", {email: email});
 }
 
 }
