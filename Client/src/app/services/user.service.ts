@@ -6,6 +6,7 @@ import { ApiResponse } from '../util';
 import { first } from 'rxjs/operators';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { AuthenticationService } from './auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +26,9 @@ export class UserService {
   // public notificationSubject = new BehaviorSubject<any>();
   
 
-  constructor(private http: HttpClient, private authService: AuthenticationService) { 
+  constructor(private http: HttpClient, private authService: AuthenticationService, private tostService: ToastrService) { 
     // this.connect();
-    console.log("MOTHER FUCKER", this.authService.getCurrentUser());
+    console.log("V12")
   }
 
   public connect() {
@@ -39,15 +40,8 @@ export class UserService {
       this.socket.onmessage = (event) => {
         this.postSubject.next();
         this.adminBadPostSubject.next();
-
         console.log(event.data, 'FROM SERVER');
-        
-        if(event.data) {
-          let noti = event.data;
-          if(noti.notiType == 5) {
-            this.adminBadPostSubject.next();
-          }
-        }
+        this.tostService.success(event.data.message);
       }
 
   }

@@ -47,6 +47,7 @@ export class UserFeedComponent implements OnInit {
       "width": "500px"
     },
     previewPanel: {
+      "width":"300px",
       "background-color": "white",
       "border-radius": "0 0 25px 25px",
     }
@@ -135,6 +136,8 @@ onWindowScroll() {
            this.post.likes = [];
            this.post.comments = [];
            this.feeds.unshift(response.result);
+           this.post = new Post();
+
          })
     console.log("NEW", this.post);
 

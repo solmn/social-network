@@ -10,6 +10,7 @@ import { User } from 'src/app/models';
 })
 export class RightComponent implements OnInit {
   userNoti = new User();
+  ads: any;
   constructor(private authService: AuthenticationService,
      private userService: UserService,
      private router: Router) {
@@ -22,9 +23,10 @@ export class RightComponent implements OnInit {
 
   ngOnInit(): void {
     //  this.getNotification();
-    // this.userService.feetchAds().subscribe(result => {
-    //   console.log("ADDDDSSSSSSSSSSS", result);
-    // });
+    this.userService.feetchAds().subscribe(result => {
+       this.ads = result.result;
+       console.log("ADSS", this.ads);
+    });
   }
 
   getNotification() {

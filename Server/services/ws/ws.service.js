@@ -15,7 +15,7 @@ function startWebSocket(app) {
                 if (!ws.userId) ws.close();
             }
             
-        }, 45000);
+        }, 60000);
 
         ws.on('close', function() {
             console.log('The connection is closed');

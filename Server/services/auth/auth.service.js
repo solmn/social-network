@@ -1,11 +1,13 @@
 const
-    path = require('path'),
-    bcrypt = require('bcryptjs'),
-    jwt = require('jsonwebtoken'),
-    crypto = require('crypto'),
-    { ApiResponse } = require(path.join(__dirname, "..", "..", "util")),
-    { User, Post, Ad } = require(path.join(__dirname, '..', '..', 'models')),
-    { mailerService } = require(path.join(__dirname, '..', 'shared'));
+     path = require('path'),
+     bcrypt = require('bcryptjs'),
+     jwt = require('jsonwebtoken'),
+     crypto = require('crypto'),
+     { ApiResponse } = require(path.join(__dirname, "..", "..", "util")),
+     { User, Post, Ad } = require(path.join(__dirname,'..', '..', 'models')),
+     { mailerService } = require(path.join(__dirname, '..', 'shared')),
+     notificationService = require('../notification');
+
 
 
 async function signup(data) {
@@ -40,11 +42,27 @@ async function login(username, password) {
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, { expiresIn: 86400 });
     let result = {
         "access_token": token,
-        ...user._doc
-    };
-    return new ApiResponse(200, "success", result);
+         ...user._doc
+       };
+    return new ApiResponse(200, "success", result); 
 
+}
 
+async function activate(username, password , app) {
+
+    const user = await User.findOne({ username });
+    if(!user) return new ApiResponse(401, "error", {err: "Username doesn't exists"});
+
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) return new ApiResponse(401, "error", {err:"Invalid password"})
+
+    if(user._doc.status ==="requested") {
+        return new ApiResponse(401, "error", {err:"You have already requested for account deactivation. your account is under review"})
+    }
+    user.status = "requested";
+    await user.save();
+    await notificationService.accountActivationNotification(user._id, app);
+    return new ApiResponse(200, "success", {message: "You have successfully submited account request form. We will review your account with in the next 3 buisness days."})
 
 
 }
@@ -96,5 +114,6 @@ module.exports = {
     resetPassword,
     forgotPassword,
     updateProfile,
-    activateAccount
+    activateAccount,
+     activate
 }

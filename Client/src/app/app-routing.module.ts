@@ -2,11 +2,6 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
 import { Routes, RouterModule } from "@angular/router";
-
-import { IndexComponent } from "./pages/index/index.component";
-import { ProfilepageComponent } from "./pages/examples/profilepage/profilepage.component";
-import { RegisterpageComponent } from "./pages/examples/registerpage/registerpage.component";
-import { LandingpageComponent } from "./pages/examples/landingpage/landingpage.component";
 import { HomeComponent } from "./pages/home/home.component";
 import { SignupComponent } from './pages/signup/signup.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -20,6 +15,8 @@ import { AuthGuard } from "./guards";
 import { AdminHomeComponent} from './pages/admin/admin-home/admin-home.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { NewPasswordComponent } from './pages/new-password/new-password.component';
+import { ActivateComponent } from './pages/activate/activate.component';
+
 // this.route.snapshot.paramMap.get("token")
 import { Role } from './models';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -50,6 +47,7 @@ const routes: Routes = [
   },
   { path: "signup", component: SignupComponent },
   { path: "login", component: LoginComponent },
+  { path: "activate-account", component: ActivateComponent},
   { path: "admin", 
     data: {role: Role.Admin}, 
     canActivate: [AuthGuard],

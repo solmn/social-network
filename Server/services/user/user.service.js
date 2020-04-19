@@ -7,8 +7,7 @@ const
     stopWordPath = path.join(__dirname, '..', '..', 'resources/stop-words/stopWords.json'),
     { User, Post, Ad } = require(path.join(__dirname, '..', '..', 'models')),
     notificationService = require('../notification'),
-    systemService = require("../system"),
-    moment = require('moment');
+    systemService = require("../system");
 
 
 
@@ -27,16 +26,26 @@ async function createPost(userId, data, app) {
 
     });
     let result;
+    console.log("..................................REVIWING.....................................")
     let failsReview = await systemService.notSafeForPost(data.description);
+    console.log("REVIEW RESULT....", failsReview);
+
     if (failsReview) {
         post.status = "onhold";
         result = await post.save();
+        console.log("Account on hold, NOT HEALTHY....", failsReview);
         await notificationService.badPostNotification(userId, result, app);
+        console.log("BAD POST NOTIFICATION SENT for Both ADMIN And USER....", failsReview);
 
     } else {
+        console.log("REVIEW RESULT.... HEALTHY");
         result = await post.save();
         if(data.notify) {
+            console.log("SENDING NOTI to followers");
             await notificationService.newPostNotification(userId, result, app);
+        }
+        else {
+            console.log("NOTIFICAION MUTED BY THE USER");
         }
     }
     return new ApiResponse(200, "success", result);
@@ -56,11 +65,28 @@ async function fetchAds(userId) {
                             (365 * 24*60*60*1000)]} 
                 }
         } ] );
-    let age = Math.round(parseFloat(u.age));
-    let result = await Ad.find({
-        $or: [{minAge: { $lte:  age}, maxAge: { $gte: age }},
-             {targetLocation: u.location}]
-    }).sort({ createdAt: "desc" });
+    let age = Math.round(parseFloat(u[0].age));
+    let result = await Ad.find(
+        {
+            $or: [
+                {targetType: "all"},
+                {
+                   targetType: "location", targetLocation: u.location
+                },
+                {
+                    targetType: "age",
+                    minAge: { $lte:  age},
+                    maxAge: { $gte: age }
+                },
+                {
+                    targetType: "both",
+                    minAge: { $lte:  age},
+                    maxAge: { $gte: age },
+                    targetLocation: u.location
+                }
+            ]
+        }
+    ).sort({ createdAt: "desc" }).limit(2);
     return new ApiResponse(200, "success", result);
 
 }
@@ -342,15 +368,17 @@ async function fetchFeed(userId, page) {
     return new ApiResponse(200, "success", result);
 }
 async function searchFeeds(userId, text) {
+    console.log("GOT IT ", text);
     let Limit = 8;
     page = 1;
     let user = await _getUser(userId);
     let followings = user.following;
     followings = followings.map(f => f.followerID);
     followings.push(userId);
+    console.log("FOLLOWINGS", followings);
     let result = await Post.find(
         { postedBy: { $in: followings },
-          status: "ok" ,
+        $or: [{status: "ok"}, {postedBy: userId}] ,
           description: {$regex: text, $options:"i"}
         })
         .populate("postedBy")

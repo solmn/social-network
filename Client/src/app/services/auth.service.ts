@@ -28,6 +28,10 @@ export class AuthenticationService {
       return this.currentUser != null;
     }
 
+    activateRequest(username:string, password:string) {
+        return this.http.post<ApiResponse>(environment.API_URL + "/api/auth/activate-account", {username, password });
+    }
+
     login(username: string, password: string) {
       console.log(username, password);
         return this.http.post<ApiResponse>(environment.API_URL + "/api/auth/login", {username, password })

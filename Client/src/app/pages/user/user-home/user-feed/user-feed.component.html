@@ -19,7 +19,7 @@
                    buttonCaption="browse"
                    dropBoxMessage=""
                    clearButtonCaption=""
-                   [url]="IMG_UPLOD_URL" [max]="4" [extensions]="['jpeg','png']"
+                   [url]="IMG_UPLOD_URL" [max]="1" [extensions]="['jpeg','png']"
                    [style]="customStyle">
                 </image-upload>
               </form>
@@ -27,8 +27,7 @@
         </div>
        <div *ngIf="post_status">
         <alert class="" [type]="'success'"  [dismissible]="true">
-          <span class=" tim-icons icon-trophy" data-notify="icon">
-          </span>
+          
           <span>
             Successfully created your post!
           </span>

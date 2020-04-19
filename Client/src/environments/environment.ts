@@ -4,10 +4,9 @@
 
 export const environment = {
   production: false,
-  API_URL: 'http://localhost:3000',
-  API_SOCKET_URL: "ws://localhost:3000/"
+  API_URL: 'https://truly-async.herokuapp.com',
+  API_SOCKET_URL: "wss://truly-async.herokuapp.com"
 };
-
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
@@ -16,3 +15,7 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+
+  // API_URL: 'http://localhost:8000',
+  // API_SOCKET_URL: "ws://localhost:8000"
+  
