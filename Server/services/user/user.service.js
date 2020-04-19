@@ -7,8 +7,7 @@ const
     stopWordPath = path.join(__dirname, '..', '..', 'resources/stop-words/stopWords.json'),
     { User, Post, Ad } = require(path.join(__dirname, '..', '..', 'models')),
     notificationService = require('../notification'),
-    systemService = require("../system"),
-    moment = require('moment');
+    systemService = require("../system");
 
 
 
@@ -56,11 +55,28 @@ async function fetchAds(userId) {
                             (365 * 24*60*60*1000)]} 
                 }
         } ] );
-    let age = Math.round(parseFloat(u.age));
-    let result = await Ad.find({
-        $or: [{minAge: { $lte:  age}, maxAge: { $gte: age }},
-             {targetLocation: u.location}]
-    }).sort({ createdAt: "desc" });
+    let age = Math.round(parseFloat(u[0].age));
+    let result = await Ad.find(
+        {
+            $or: [
+                {targetType: "all"},
+                {
+                   targetType: "location", targetLocation: u.location
+                },
+                {
+                    targetType: "age",
+                    minAge: { $lte:  age},
+                    maxAge: { $gte: age }
+                },
+                {
+                    targetType: "both",
+                    minAge: { $lte:  age},
+                    maxAge: { $gte: age },
+                    targetLocation: u.location
+                }
+            ]
+        }
+    ).sort({ createdAt: "desc" }).limit(2);
     return new ApiResponse(200, "success", result);
 
 }
@@ -342,15 +358,17 @@ async function fetchFeed(userId, page) {
     return new ApiResponse(200, "success", result);
 }
 async function searchFeeds(userId, text) {
+    console.log("GOT IT ", text);
     let Limit = 8;
     page = 1;
     let user = await _getUser(userId);
     let followings = user.following;
     followings = followings.map(f => f.followerID);
     followings.push(userId);
+    console.log("FOLLOWINGS", followings);
     let result = await Post.find(
         { postedBy: { $in: followings },
-          status: "ok" ,
+        $or: [{status: "ok"}, {postedBy: userId}] ,
           description: {$regex: text, $options:"i"}
         })
         .populate("postedBy")

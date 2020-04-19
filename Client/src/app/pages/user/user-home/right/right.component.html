@@ -1,28 +1,13 @@
-<div class="right-container" style="border-radius: 13px;">
+<div class="right-container" style="border-radius: 13px; position: fixed;">
   
-  <div class="card post" style="border-radius: 13px; max-height: 400px;">
+  <div class="card post" style="border-radius: 13px; max-height: 400px;" *ngFor="let ad of ads">
     <div class="card-body">
       <h5 style="color: black;">Sponsored</h5>
       <div class="content">
-           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-                ut aliquip ex ea commodo consequat.
+           <p [innerHTML]="ad.description | linky">
             </p>
-           <img height="200px"   src="assets/img/post.jpeg" />
-      </div>
-    </div>
-  </div>
-  <div class="card post" style="border-radius: 13px; max-height: 400px;">
-    <div class="card-body">
-      <h5 style="color: black;">Sponsored</h5>
-      <div class="content">
-           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-                ut aliquip ex ea commodo consequat.
-            </p>
-           <img src="assets/img/post.jpeg" />
+           <img *ngIf="ad.imageUrl" width="340px" height="200px" style="object-fit: cover;"   [src]="ad.imageUrl" />
+           <p style="color: black;font-size: 9px;">{{datePublished | timeAgo}}</p>
       </div>
     </div>
   </div>

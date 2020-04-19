@@ -62,6 +62,7 @@ searchPost(value) {
   console.log(this.router.url, "ROUTER");
     this.userService.searchFeeds(value).subscribe(result => {
       this.userService.searchSubject.next(result.result);
+      console.log("DATATATAT", result);
       // this.router.navigate(['/']);
     })
 }
