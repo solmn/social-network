@@ -1,6 +1,7 @@
 <h4>New Advertisment</h4>
-<button type="button" class="btn btn-secondary btn-lg btn-block" (click)="toggleAddPane()">{{buttonName[nameIndex]}}</button>
-<div *ngIf="showNewAdPane">
+<!-- <button type="button" class="btn btn-secondary btn-lg btn-block" (click)="toggleAddPane()">{{buttonName[nameIndex]}}</button> -->
+<!-- <div *ngIf="showNewAdPane"> -->
+<div>
     <form [formGroup]="advertisementForm" (ngSubmit)="onCreateNewPost()">
         <div class="input-group">
             <div class="input-group-prepend">
@@ -9,7 +10,7 @@
             <textarea formControlName="advertisementDescriptionTextArea" class="form-control" name="advertisementDescriptionTextArea" aria-label="With textarea" placeholder="Advert description here...." type="text " (focus)="focus=true" (blur)="focus=false"></textarea>
         </div>
         <div>
-            <image-upload url=" http://localhost:3000/api/uploads/profile-image " [max]="2 " [extensions]="[ 'jpeg', 'png'] " [buttonCaption]=" 'Browse' " [style]="customStyle " (uploadFinished)="onUploadFinished($event) ">
+            <image-upload url=" http://localhost:3000/api/uploads/profile-image" [max]="1" [extensions]="[ 'jpeg', 'png'] " [buttonCaption]=" 'Browse' " [style]="customStyle " (uploadFinished)="onUploadFinished($event) ">
             </image-upload>
         </div>
         <fieldset class="scheduler-border ">
@@ -46,80 +47,21 @@
     </form>
 </div>
 <!-- VIEW AND EDIT ADVERTISEMENT -->
-<h2> Current Active Advertisements</h2>
+<h2 style="color: black;"> Current Active Advertisements</h2>
 
 <div class="card post" *ngFor="let advert of allAdvertisements; let arrayIndex=index">
     <div class="card-body ">
         <div class="post-content ">
             <div class="form-group">
-                <!-- <span [innerHTML]="{{advert.description}} | linky"></span> -->
-                <p>{{advert.description}}</p>
+                <p style="padding: 2%" [innerHTML]="advert.description | linky">
             </div>
-            <img ng-src="{{advert.imageUrl[0]}}" />
+            <img width="100%" style="object-fit: cover; max-height: 400px;" class="img-fluid" [src]="advert.imageUrl" />
         </div>
     </div>
     <div class="card-footer row ">
-        <!-- Modal -->
         <div class="col-md-12">
-            <!-- <button class="btn btn-success" data-target="#editAdvert" (click)="editAdvert.show()">Edit</button> -->
             <button class="btn btn-success" style="float: right;" name="deleteAdvert " (click)="deleteThisAdvert(arrayIndex) ">Delete</button>
         </div>
-
-        <!-- <form [formGroup]="advertisementEditForm" (ngSubmit)="editAdvertisement(arrayIndex)">
-            <div aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade modal-black" #editAdvert="bs-modal" id="editAdvert" role="dialog" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div class="text-center text-muted mb-4 mt-3">
-                                <small> Edit Advertisement</small>
-                            </div>
-                            <div>
-                                <div class="form-group mb-3">
-                                    <div class="input-group input-group-alternative" [ngClass]="{'input-group-focus':focus1===true}">
-                                        <textarea formControlName="editDescription" class="form-control" id="exampleFormControlTextarea1" rows="3" (focus)="focus1=true" (blur)="focus1=false">{{advert.description}}</textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group input-group-alternative" [ngClass]="{'input-group-focus':focus2===true}">
-                                        <fieldset class="scheduler-border ">
-                                            <legend class="scheduler-border ">Advertisment settings</legend>
-                                            <div class="container-fluid ">
-                                                <div class="row justify-content-center ">
-
-                                                    <div class="col-md-12 ">
-                                                        <div class="checkbox ">
-                                                            <label><input formControlName ="editTargetAgeCheckBox" type="checkbox" value=" " name="targetAgeCheckBox " style="margin-right: 10px; ">Target by age group</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        Min:<input formControlName="editMinAge" type="number" name="minAge " min="18" value="{{advert.minAge}}" style="max-width:50%;margin-left: 10px; ">
-                                                    </div>
-                                                    <div class="col-md-6 ">
-                                                        Max:<input formControlName="editMaxAge" type="number" name="maxAge" min="19" value="{{advert.maxAge}}" style="max-width:50%;margin-left: 10px; ">
-                                                    </div>
-                                                </div>
-                                                <br>
-                                                <div class="row justify-content-center ">
-                                                    <div class="col-md-12">
-                                                        <div class="checkbox ">
-                                                            <label><input formControlName="editLocationCheckBox" type="checkbox" value=" " name="targetLocationCheckBox " style="margin-right: 10px; ">Target by location</label>
-                                                        </div>
-                                                        Location:<input formControlName="editLocation" name="location" type="text" value="{{advert.targetLocation}}" style="margin-left: 2px; ">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    <button type="button" class="btn btn-secondary btn-lg btn-block" (click)="editAdvert.hide()">Save Changes</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form> -->
 
     </div>
 </div>
