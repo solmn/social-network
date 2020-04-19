@@ -48,20 +48,14 @@ creatAdvertisement(newAdvertisement:Advertisement){
 editAdvertisement(editedAd, id){
   return this.http.post<ApiResponse>(environment.API_URL+'/api/admin/edit-ad',{_id:id,edited:editedAd});
 }
-approvePost(post){
-
-return this.http.post<ApiResponse>(environment.API_URL+'api/admin/approve-post',post);
+approvePost(data){  
+    return this.http.post<ApiResponse>(environment.API_URL+'/api/admin/approve-post',data);
 }
-rejectPost(post){
-
-  return this.http.post<ApiResponse>(environment.API_URL+'api/admin/reject-post',post);
+rejectPost(data){
+  return this.http.post<ApiResponse>(environment.API_URL+'/api/admin/reject-post',data);
 }
-activateAccount(account){
 
-  return this.http.post<ApiResponse>(environment.API_URL+'api/admin/activate-user-account',account);
-}
 getDeactivatedAccounts(){
-
   return this.http.get<ApiResponse>(environment.API_URL+'/api/admin/get-deactivated-account');
 }
 
@@ -72,5 +66,14 @@ adminPullNotifications(){
   return this.http.get<ApiResponse>(environment.API_URL+'/api/admin/pull-notifications');
 }
 
+deactivateAccount(data){
+  return this.http.post<ApiResponse>(environment.API_URL+'/api/admin/deactivate-account', data);
+}
+activateAccount(accountId){
+  return this.http.post<ApiResponse>(environment.API_URL+'/api/admin/activate-user-account',accountId);
+}
+accountActivateEmail(email) {
+  return this.http.post<ApiResponse>(environment.API_URL + "/api/auth/activate-account", {email: email});
+}
 
 }
