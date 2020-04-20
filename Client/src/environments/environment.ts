@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  API_URL: 'http://localhost:8000',
-  API_SOCKET_URL: "ws://localhost:8000"
+  API_URL: 'https://truly-async.herokuapp.com',
+  API_SOCKET_URL: "wss://truly-async.herokuapp.com"
 };
 /*
  * For easier debugging in development mode, you can import the following file
