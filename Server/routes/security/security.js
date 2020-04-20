@@ -21,7 +21,6 @@ exports.authorize = (req, res, next) => {
     userService._getUserById(req.userId)
         .then(u => {
             if (u.role !== 'ADMIN') {
-                console.log("not admin")
                 res.status(401).json(new ApiResponse(401, "error", { err: "Unauthorized ADMIN" }));
             }
             return next();

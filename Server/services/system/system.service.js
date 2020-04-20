@@ -15,7 +15,6 @@ let badWordList;
  */
 
 function isBadWord(word) {
-    // console.log('BAD WORD LIST IS: ', badWordList, word.toLowerCase());
     let contains = badWordList.map(w => w.toLowerCase()).includes(word.toLowerCase());
     return contains;
 }
@@ -27,10 +26,8 @@ function notSafeForPost(post) {
     let ret = false;
     let listOfPostWords = post.split(' ');
     let listOfPostWordsLoweCase = listOfPostWords.map(eachWord => eachWord.toLowerCase());
-    console.log('TO LOWERCASE:  ', listOfPostWordsLoweCase)
     listOfPostWordsLoweCase.some((value, index, _arr) => {
         if (isBadWord(value)) {
-            console.log('is bad word ', value)
             ret = true;
             return true;
         }

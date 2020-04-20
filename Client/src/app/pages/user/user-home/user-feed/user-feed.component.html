@@ -2,7 +2,7 @@
 <div class="card create-post" >
   <div class="card-body">
        <div class="pic_username">
-           <img src="assets/img/mike.jpg" width=30 class=" rounded-circle">
+           <img src="assets/img/pro.png" width=30 class=" rounded-circle">
            <span >{{currentUser.firstname}}  {{currentUser.lastname}}</span>
        </div>
         <div class="form-row position: relative">
@@ -47,7 +47,7 @@
   <div class="card post" style="border-radius: 12px;">
     <div class="card-body">
       <div class="pic_username">
-            <img src="assets/img/mike.jpg" width=30 class=" rounded-circle">
+            <img src="assets/img/pro.png" width=30 class=" rounded-circle">
             <span >{{ feed.postedBy.username}} </span><span style="margin-left: 1%; font-size: 10px;">{{ feed.createdAt | timeAgo }}</span>
       </div>
       <div class="post-content">
@@ -73,7 +73,7 @@
       <div *ngFor="let comment of feed.comments.reverse()">
         <div class=" row" style="padding-bottom: 3px; margin-bottom: 2%;">
           <div class="cols-sm-1" style="margin-right: 5px;">
-            <img src="assets/img/mike.jpg" width=30 class=" rounded-circle">
+            <img src="assets/img/pro.png" width=30 class=" rounded-circle">
             <i class="fa fa-caret-left" aria-hidden="true"></i>
 
           </div>

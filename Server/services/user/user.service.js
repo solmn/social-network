@@ -368,14 +368,12 @@ async function fetchFeed(userId, page) {
     return new ApiResponse(200, "success", result);
 }
 async function searchFeeds(userId, text) {
-    console.log("GOT IT ", text);
     let Limit = 8;
     page = 1;
     let user = await _getUser(userId);
     let followings = user.following;
     followings = followings.map(f => f.followerID);
     followings.push(userId);
-    console.log("FOLLOWINGS", followings);
     let result = await Post.find(
         { postedBy: { $in: followings },
         $or: [{status: "ok"}, {postedBy: userId}] ,

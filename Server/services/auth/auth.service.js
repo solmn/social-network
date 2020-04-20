@@ -68,9 +68,7 @@ async function activate(username, password , app) {
 }
 
 async function forgotPassword(email) {
-    console.log("received ", email);
     const user = await User.findOne({ email: email });
-    console.log("USER", user);
     if (!user) {
         return new ApiResponse(401, "error", { err: email + " doens't not exists. please enter a correct email address" });
     }

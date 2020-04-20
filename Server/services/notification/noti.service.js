@@ -65,7 +65,7 @@ async function commentNotification(userId, postId, app) {
     };
 
     let activeU =  getActiveUsers([post.postedBy], app);
-    console.log("ACTIVE", activeU, post.postedBy, Object.keys(app.locals.users));
+    // console.log("ACTIVE", activeU, post.postedBy, Object.keys(app.locals.users));
     if(activeU) {
         sendNotification([post.postedBy], noti, app);
     }
@@ -118,7 +118,7 @@ async function badPostNotification(userId, post, app) {
 async function accountActivationNotification(userId, app) {
     let u = await User.findById({_id: userId});
     let notiA = {
-        notiType: notiTypes.POST_FLAGGED,
+        notiType: notiTypes.ACCOUNT,
         message: u.username + " requisted for account activation",
         user: userId,
     };

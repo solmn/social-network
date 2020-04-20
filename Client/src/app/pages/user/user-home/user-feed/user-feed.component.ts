@@ -5,6 +5,7 @@ import { tick } from '@angular/core/testing';
 import  { environment } from '../../../../../environments/environment';
 import { FileHolder, UploadMetadata } from 'angular2-image-upload';
 import { first } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-feed',
@@ -55,9 +56,17 @@ export class UserFeedComponent implements OnInit {
   feeds = [];
   page = 1;
   end = false;
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private authService: AuthenticationService, private router: Router) {
     console.log("constructor of Feed component", this.IMG_UPLOD_URL);
-
+    this.currentUser = this.userService.getCurrrentUser();
+    if(this.currentUser) {
+        this.userService.getUserById(this.currentUser._id).subscribe(result => {
+          if(result.result.statu === "deactivated") {
+            this.authService.logout();
+                this.router.navigate(['/activate-account']);
+          }
+        })
+    }
   }
 
   ngOnInit(): void {
@@ -137,6 +146,12 @@ onWindowScroll() {
            this.post.comments = [];
            this.feeds.unshift(response.result);
            this.post = new Post();
+           this.userService.getUserById(response.result.postedBy).subscribe(re => {
+              if(re.result.status === "deactivated") {
+                this.authService.logout();
+                this.router.navigate(['/activate-account']);
+              }
+           });
 
          })
     console.log("NEW", this.post);

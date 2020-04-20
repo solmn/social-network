@@ -9,7 +9,7 @@ function startWebSocket(app) {
     let users = [];
     app.locals.users = users;
     app.ws('/', function(ws, req) {
-        console.log("CONNECTDD");
+        console.log("WEBSOCKET CONNECTED");
         setTimeout(() => {
             if(ws.readyState == WebSocket.OPEN) {
                 if (!ws.userId) ws.close();
@@ -29,7 +29,7 @@ function startWebSocket(app) {
                 if(!verified) ws.close()
                 ws.userId = verified.id;
                 users[verified.id] = ws;
-                ws.send("You have succesfully connected");
+                // ws.send("You have succesfully connected");
             }
             else {
                 ws.close();

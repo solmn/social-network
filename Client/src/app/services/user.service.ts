@@ -41,7 +41,13 @@ export class UserService {
         this.postSubject.next();
         this.adminBadPostSubject.next();
         console.log(event.data, 'FROM SERVER');
-        this.tostService.success(event.data.message);
+
+        try{
+             let d = JSON.parse(event.data);
+             this.tostService.success(d['message']);
+        }catch(err) {}
+       
+        console.log("NOTIFICATIPN MESSAGE: " + event.data);
       }
 
   }

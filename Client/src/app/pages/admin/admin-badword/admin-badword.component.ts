@@ -24,17 +24,20 @@ export class AdminBadwordComponent implements OnInit {
 
   constructor(private adminService:AdminService, private userService:UserService,
     private formBuilder: FormBuilder ) { 
-
+      this.getAllDeactiveAccounts();
         this.badWordForm = this.formBuilder.group({
           newBadWord:['',Validators.required]
         });
         this.userService.adminBadPostSubject.subscribe(response=>{
+
+          console.log("SUBSCRIPTION");
           this.getAllDeactiveAccounts();
         });
  
 
     }
   ngOnInit(): void {
+    this.getAllDeactiveAccounts();
       this.adminService.getBadWords().pipe(first())
                                .subscribe(badword =>{
                                   this.allBwords = badword.result; 
@@ -46,6 +49,7 @@ export class AdminBadwordComponent implements OnInit {
 getAllDeactiveAccounts(){
   this.adminService.getDeactivatedAccounts().pipe(first())
                    .subscribe(response=>{
+                     console.log("DEACTIVATED accounts", response);
                      this.allDeactivatedAccounts = response.result; 
                    })
 }

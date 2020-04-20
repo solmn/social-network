@@ -10,12 +10,11 @@ import { AdminHomeComponent } from '../admin-home/admin-home.component';
   styleUrls: ['./admin-post-review.component.scss']
 })
 export class AdminPostReviewComponent implements OnInit {
-  adminNotifications:any
-  allBadPosts:any
+  adminNotifications:any;
+  allBadPosts:any;
   constructor(
     private adminService:AdminService, 
-    private userService: UserService, 
-    private adminHomeComponent: AdminHomeComponent) { 
+    private userService: UserService) { 
 
     this.userService.adminBadPostSubject.subscribe(res => {
       this.getFlaggedPosts(); 
@@ -31,7 +30,7 @@ export class AdminPostReviewComponent implements OnInit {
 getFlaggedPosts(){
   this.adminService.getBadWordedPosts().pipe(first())
                    .subscribe(response=>{
-                    this.allBadPosts = response.result; 
+                    this.allBadPosts = response.result.filter(r => r.post); 
                     console.log("GOT THE POSTS FETACHED........",this.allBadPosts)
   })
   

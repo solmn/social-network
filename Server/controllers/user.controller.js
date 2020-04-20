@@ -164,7 +164,6 @@ exports.fetchFeed = async(req, res, next) => {
 exports.fetchAds = async (req, res, next) => {
     try {
         let response = await userService.fetchAds(req.userId);
-        console.log("result of ads", response);
         res.status(response.status).json(response);
     } catch (err) {
         console.log(err);

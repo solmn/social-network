@@ -120,7 +120,7 @@ async function activateThisAccount(thisUserAccount) {
 }
 
 async function getDeactivatedAccounts() {
-    let results = await User.find({ status: 'deactivated' });
+    let results = await User.find({ status: 'requested' });
     return results;
 }
 
@@ -135,7 +135,7 @@ async function deactivateThisAccount(data) {
     let blockedPost = await Post.updateOne({ _id: data.postId }, { $set: { status: "blocked" } });
     let admin = await User.updateOne({ _id: data.notiId }, {
         $pull: {
-            notifications: { _id: body.notiId }
+            notifications: { _id: data.notiId }
         }
     });
     return { deactivatedUser, blockedPost, admin };

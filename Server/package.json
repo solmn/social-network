@@ -4,7 +4,7 @@
     "description": "Node js, Mongodb, Mongoose",
     "main": "index.js",
     "scripts": {
-        "start": "node app.js"
+        "start": "nodemon app.js"
     },
     "dependencies": {
         "angular-linky": "^1.2.2",
