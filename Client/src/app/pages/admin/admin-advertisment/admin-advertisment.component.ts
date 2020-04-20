@@ -55,7 +55,8 @@ export class AdminAdvertismentComponent implements OnInit {
   nameIndex = 0;
   advertTextAreaStatus = true;
 
-
+  API_URL: string = environment.API_URL;
+  IMG_UPLOD_URL = this.API_URL + "/api/uploads/profile-image";
 
   constructor(
               private adminService:AdminService, 
